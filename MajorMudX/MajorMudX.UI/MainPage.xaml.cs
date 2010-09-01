@@ -9,9 +9,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using MajorMudX.Core.UI;
 
-namespace MajorMudX
+namespace MajorMudX.UI
 {
+    [CharacterHost]
     public partial class MainPage : UserControl
     {
         public MainPage()

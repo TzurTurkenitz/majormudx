@@ -1,6 +1,6 @@
 ﻿namespace MajorMudX.Core.Sockets
 {
-    public enum TelnetOptions : byte
+    internal enum TelnetOptions : byte
     {
         TransmitBinary = 0x0,
         Echo = 0x1,
