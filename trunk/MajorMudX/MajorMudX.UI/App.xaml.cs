@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using MajorMudX.UI.Views;
 
 namespace MajorMudX.UI
 {
@@ -26,7 +27,7 @@ namespace MajorMudX.UI
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.RootVisual = new MainPage();
+            this.RootVisual = new MainCharacterDisplay();
         }
 
         private void Application_Exit(object sender, EventArgs e)

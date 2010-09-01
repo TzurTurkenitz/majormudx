@@ -1,24 +1,22 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Documents;
+using System.Windows.Ink;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MajorMudX.Core.UI;
+using MajorMudX.Core.Utilities.Text;
 
-namespace MajorMudX.UI
+namespace MajorMudX.UI.Utilities
 {
-    [CharacterHost]
-    public partial class MainPage : UserControl
+    public class MMXTextDecorator : TextDecoratorBase
     {
-        public MainPage()
+        public override Core.UI.Text.DisplayText[] ProcessText(string text)
         {
-            InitializeComponent();
+            return base.ProcessText(text);
         }
     }
 }
