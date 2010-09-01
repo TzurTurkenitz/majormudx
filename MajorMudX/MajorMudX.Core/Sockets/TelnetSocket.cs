@@ -124,18 +124,24 @@ namespace MajorMudX.Core.Sockets
         public void Write(string message)
         {
             // format the message for telnet
-            message = message.Trim() + "\r\n";
+            message = message.Replace("\n", "\r\n");
 
             SocketAsyncEventArgs args = new SocketAsyncEventArgs();
             args.UserToken = _socket;
             args.RemoteEndPoint = _address;
             args.Completed += new EventHandler<SocketAsyncEventArgs>(ProcessSocketEvent);
 
-            byte[] buffer = new byte[message.Length];
-            for (int i = 0; i < buffer.Length; ++i)
-                buffer[i] = (byte)message[i];
+            if (message == "\b")
+                args.SetBuffer(new byte[] { (byte)TelnetCommands.IAC, (byte)TelnetCommands.EraseCharacter }, 0, 2);
+            else
+            {
+                byte[] buffer = new byte[message.Length];
 
-            args.SetBuffer(buffer, 0, buffer.Length);
+                for (int i = 0; i < buffer.Length; ++i)
+                    buffer[i] = (byte)message[i];
+
+                args.SetBuffer(buffer, 0, buffer.Length);
+            }
 
             _socket.SendAsync(args);
         }

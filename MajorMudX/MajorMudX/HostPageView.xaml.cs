@@ -13,6 +13,8 @@ using MajorMudX.Core.Sockets;
 using System.Reflection;
 using MajorMudX.Core.Utilities.XapManagement;
 using MajorMudX.Core.UI;
+using MajorMudX.Core.Injection;
+using MajorMudX.Core.Utilities.Text;
 
 namespace MajorMudX
 {
