@@ -19,7 +19,7 @@ namespace MajorMudX.Core.Sockets
     /// <summary>
     /// Manages a Telnet Encoded TCP Socket.
     /// </summary>
-    public class TelnetSocket
+    public sealed class TelnetSocket
     {
         Socket _socket;
         EndPoint _address;
@@ -55,7 +55,7 @@ namespace MajorMudX.Core.Sockets
         {
             get
             {
-                return _socket == null || _socket.Connected;
+                return _socket == null ? false : _socket.Connected;
             }
         }
 

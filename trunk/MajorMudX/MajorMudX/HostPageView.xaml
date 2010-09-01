@@ -1,0 +1,27 @@
+﻿<UserControl x:Class="MajorMudX.HostPageLayout"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    d:DesignHeight="600" d:DesignWidth="800" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit" xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+    
+    <Grid x:Name="LayoutRoot" Background="White">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="35" />
+            <RowDefinition Height="35" />
+            <RowDefinition Height="1*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" Grid.Row="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <toolkit:WrapPanel Grid.Row="1" HorizontalAlignment="Stretch" Name="wrapPanel1" VerticalAlignment="Stretch" />
+
+
+        <sdk:TabControl Grid.Row="2" HorizontalAlignment="Stretch" Name="tcMainContent" VerticalAlignment="Stretch">
+            <sdk:TabItem Header="tabItem1" Name="tabItem1">
+                <Button Content="Button" Height="23" Name="button1" Width="75" Click="button1_Click" />
+            </sdk:TabItem>
+        </sdk:TabControl>
+       
+    </Grid>
+</UserControl>

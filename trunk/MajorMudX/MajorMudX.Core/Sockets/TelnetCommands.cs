@@ -1,6 +1,6 @@
 ﻿namespace MajorMudX.Core.Sockets
 {
-    public enum TelnetCommands : byte
+    internal enum TelnetCommands : byte
     {
         SubnegotiationEnd = 0xF0,
         NoOp = 0xF1,
@@ -18,10 +18,5 @@
         Do = 0xFD,
         Dont = 0xFE,
         IAC = 0xFF
-    }
-
-    public static class TelnetCommandExtensions
-    {
-        public static byte Value(TelnetCommands command) { return (byte)command; }
     }
 }
