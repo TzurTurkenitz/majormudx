@@ -22,14 +22,18 @@ namespace MajorMudX.UI.Utilities
         static Regex _damage;
         static Regex _combatMarker;
         static Regex _movement;
+        static Regex _alsoHere;
+        static Regex _exits;
 
-        static RegexOptions _options = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase | RegexOptions.IgnorePatternWhitespace;
+        static RegexOptions _options = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
         static MMXTextDecorator()
         {
-            _damage = new Regex(".*damage[.|!]", _options);
+            _damage = new Regex(".*damage[.|!]$", _options);
             _combatMarker = new Regex(@"^\*Combat.*", _options);
             _movement = new Regex(@".*room.*from.*", _options);
+            _alsoHere = new Regex(@"^Also here:", _options);
+            _exits = new Regex(@"^Obvious exits:", _options);
         }
 
         public override IFormattedTextSegment[] ProcessText(string text)
@@ -50,6 +54,10 @@ namespace MajorMudX.UI.Utilities
                 return Colors.Yellow;
             if (_combatMarker.IsMatch(token))
                 return Colors.Orange;
+            if (_alsoHere.IsMatch(token))
+                return Colors.Purple;
+            if (_exits.IsMatch(token))
+                return Colors.Cyan;
 
             return DefaultColor;
         }
