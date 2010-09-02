@@ -8,11 +8,7 @@
 
     <toolkit:DockPanel VerticalAlignment="Stretch" Name="dockPanel1" HorizontalAlignment="Stretch" LastChildFill="True" Background="Black">
         <TextBox x:Name="textTrapping" Height="0" toolkit:DockPanel.Dock="Right" Width="0" Visibility="Visible" KeyUp="textTrapping_KeyUp" TextChanged="textTrapping_TextChanged"/>
-        <toolkit:Expander IsExpanded="True" Background="White" BorderThickness="0,0,0,0" Height="{Binding ElementName=dockPanel1, Path=ActualHeight}" ExpandDirection="Right" toolkit:DockPanel.Dock="Left">
-            <Grid Width="100">
-
-            </Grid>
-        </toolkit:Expander>
+        
         <Grid GotFocus="Grid_GotFocus">
             <ScrollViewer x:Name="MainTextViewer">
                 <TextBlock x:Name="MainTextArea"/>

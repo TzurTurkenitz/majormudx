@@ -78,6 +78,7 @@
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\MMXTextDecorator.cs" />
+    <Compile Include="Utilities\TextProcessing\Token.cs" />
     <Compile Include="Views\MainCharacterDisplay.xaml.cs">
       <DependentUpon>MainCharacterDisplay.xaml</DependentUpon>
     </Compile>

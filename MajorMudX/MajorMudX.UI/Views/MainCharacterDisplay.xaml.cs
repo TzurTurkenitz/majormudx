@@ -23,8 +23,8 @@ namespace MajorMudX.UI.Views
     public partial class MainCharacterDisplay : UserControl
     {
         TelnetSocket _socket;
-        string last = string.Empty;
         ObjectResolver _resolver;
+        IFormattedTextSegment _lastSegment;
 
         public MainCharacterDisplay()
         {
@@ -59,20 +59,35 @@ namespace MajorMudX.UI.Views
                     {
                         Run prev = MainTextArea.Inlines[MainTextArea.Inlines.Count - 1] as Run;
                         if (prev != null)
-                        {
                             prev.Text = prev.Text.Remove(prev.Text.Length - 1);
-                        }
                     }
                     else if (c != '\r')
                         sb.Append(c);
                 }
 
-                foreach (DisplayText dText in _resolver.Get<ITextDecorator>().ProcessText(sb.ToString()))
+                ITextDecorator decorator = _resolver.Get<ITextDecorator>();
+                IFormattedTextSegment[] segments = decorator.ProcessText(sb.ToString());
+
+                for (int i = 0; i < segments.Length; ++i)
                 {
-                    Run r = new Run();
-                    r.Text = dText.Text;
-                    r.Foreground = new SolidColorBrush(dText.TextColor);
-                    MainTextArea.Inlines.Add(r);
+                    if (segments[i].Text.Length == 0) continue;
+
+                    if (_lastSegment != null && !_lastSegment.Complete && MainTextArea.Inlines.Count > 0)
+                    {
+                        Run r = MainTextArea.Inlines[MainTextArea.Inlines.Count - 1] as Run;
+                        r.Text += segments[i].Text;
+                        if (((SolidColorBrush)r.Foreground).Color == decorator.DefaultColor)
+                            r.Foreground = new SolidColorBrush(segments[i].TextColor);
+                    }
+                    else
+                    {
+                        Run r = new Run();
+                        r.Text = segments[i].Text;
+                        r.Foreground = new SolidColorBrush(segments[i].TextColor);
+                        MainTextArea.Inlines.Add(r);
+                    }
+
+                    _lastSegment = segments[i];
                 }
 
                 MainTextViewer.UpdateLayout();
@@ -91,8 +106,6 @@ namespace MajorMudX.UI.Views
 
             if (_socket != null)
                 _socket.Write(s);
-
-            last = s;
         }
 
         private void textTrapping_KeyUp(object sender, KeyEventArgs e)
