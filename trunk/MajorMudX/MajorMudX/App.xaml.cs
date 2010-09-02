@@ -9,16 +9,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using MajorMudX.Core.Injection;
 
 namespace MajorMudX
 {
     public partial class App : Application
     {
+        public AppHostController RootController;
+
         public App()
         {
             this.Startup += this.Application_Startup;
             this.Exit += this.Application_Exit;
             this.UnhandledException += this.Application_UnhandledException;
+
+            RootController = new AppHostController();
 
             InitializeComponent();
         }

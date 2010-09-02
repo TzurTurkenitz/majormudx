@@ -5,9 +5,11 @@ namespace MajorMudX.Core.Utilities.Text
 {
     public abstract class TextDecoratorBase : ITextDecorator
     {
-        public virtual DisplayText[] ProcessText(string text)
+        public virtual IFormattedTextSegment[] ProcessText(string text)
         {
-            return new DisplayText[] { new DisplayText() { Text = text, TextColor = Colors.LightGray } };
+            return new IFormattedTextSegment[] { new DisplayText() { Text = text, TextColor = Colors.LightGray } };
         }
+
+        public Color DefaultColor { get { return Colors.LightGray; } }
     }
 }

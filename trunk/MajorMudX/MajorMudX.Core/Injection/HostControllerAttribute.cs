@@ -8,13 +8,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MajorMudX.Core.UI.Text;
 
-namespace MajorMudX.Core.Utilities.Text
+namespace MajorMudX.Core.Injection
 {
-    public interface ITextDecorator
+    [AttributeUsage(AttributeTargets.Class)]
+    public class HostControllerAttribute : Attribute
     {
-        IFormattedTextSegment[] ProcessText(string text);
-        Color DefaultColor { get; }
+
     }
 }

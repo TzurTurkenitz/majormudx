@@ -11,7 +11,7 @@ using System.Windows.Shapes;
 
 namespace MajorMudX.Core.UI.Text
 {
-    public class DisplayText
+    public class DisplayText : IFormattedTextSegment
     {
         string _innerText;
         Color _textColor;
@@ -27,6 +27,8 @@ namespace MajorMudX.Core.UI.Text
             get { return _textColor; }
             set { _textColor = value; }
         }
+
+        public bool Complete { get { return true; } }
 
         public DisplayText()
         {

@@ -57,7 +57,9 @@
   <ItemGroup>
     <Compile Include="CharacterManagement\CharacterBase.cs" />
     <Compile Include="CharacterManagement\ICharacter.cs" />
+    <Compile Include="Injection\AppHostController.cs" />
     <Compile Include="Injection\CreateNewAttribute.cs" />
+    <Compile Include="Injection\HostControllerAttribute.cs" />
     <Compile Include="Injection\InjectionEngine.cs" />
     <Compile Include="Injection\ObjectResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -67,6 +69,7 @@
     <Compile Include="Sockets\TelnetSocket.cs" />
     <Compile Include="UI\CharacterHostAttribute.cs" />
     <Compile Include="UI\Text\DisplayText.cs" />
+    <Compile Include="UI\Text\IFormattedTextSegment.cs" />
     <Compile Include="Utilities\Text\ITextDecorator.cs" />
     <Compile Include="Utilities\Text\TextDecoratorBase.cs" />
     <Compile Include="Utilities\XapManagement\XapLoader.cs" />
