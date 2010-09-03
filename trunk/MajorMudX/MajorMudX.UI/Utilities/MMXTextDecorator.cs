@@ -28,6 +28,15 @@ namespace MajorMudX.UI.Utilities
 
         static RegexOptions _options = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
+
+        public event EventHandler<HealthUpdateEventArgs> UpdateHealth;
+
+        public class HealthUpdateEventArgs : EventArgs
+        {
+            public int Current { get; set; }
+            public int Max { get; set; }
+        }
+
         string overflow = string.Empty;
         bool nextSet = false;
         Color nextColor = Colors.Black;
@@ -39,7 +48,7 @@ namespace MajorMudX.UI.Utilities
             _movement = new Regex(@".*room.*from.*", _options);
             _alsoHere = new Regex(@"^Also here:", _options);
             _exits = new Regex(@"^Obvious exits:", _options);
-            _status = new Regex(@"^\[.*\]:$", _options);
+            _status = new Regex(@".*HP=.*", _options);
         }
 
         public override IFormattedTextSegment[] ProcessText(string text)
@@ -60,6 +69,18 @@ namespace MajorMudX.UI.Utilities
                         tokens[i].TextColor = PaintToken(overflow + tokens[i].Text);
                     else
                         tokens[i].TextColor = PaintToken(tokens[i].Text);
+                }
+
+                if (_status.IsMatch(tokens[i].Text))
+                {
+                    string s = tokens[i].Text;
+
+                    s = s.Replace("[", "").Replace("]", "").Replace(":", "");
+
+                    int n;
+                    if (int.TryParse(s.Split('=')[1], out n))
+                        if (UpdateHealth != null)
+                            UpdateHealth(this, new HealthUpdateEventArgs() { Current = n, Max = n });
                 }
 
                 prev = (Token)tokens[i];

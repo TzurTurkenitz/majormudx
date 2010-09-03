@@ -16,7 +16,7 @@
                 <RowDefinition Height="213*" />
             </Grid.RowDefinitions>
             <controls:BubbleGauge HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" BubbleColor="DarkRed" BubbleCurrentValue="{Binding ElementName=Host, Path=Current, Mode=TwoWay}" BubbleMaxValue="{Binding ElementName=Host, Path=Max}"/>
-            <TextBlock Text="50 / 100" Foreground="DarkRed" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+            <TextBlock Text="{Binding ElementName=Host,Path=HPTotal,Mode=TwoWay}" Foreground="DarkRed" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
         </Grid>
         <Grid GotFocus="Grid_GotFocus">
             <ScrollViewer x:Name="MainTextViewer">
