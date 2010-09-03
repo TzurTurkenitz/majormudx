@@ -16,11 +16,13 @@ using MajorMudX.Core.UI.Text;
 using MajorMudX.UI.Utilities;
 using MajorMudX.Core.Injection;
 using MajorMudX.Core.Utilities.Text;
+using System.Threading;
+using System.ComponentModel;
 
 namespace MajorMudX.UI.Views
 {
     [CharacterHost]
-    public partial class MainCharacterDisplay : UserControl
+    public partial class MainCharacterDisplay : UserControl, INotifyPropertyChanged
     {
         TelnetSocket _socket;
         ObjectResolver _resolver;
@@ -28,6 +30,9 @@ namespace MajorMudX.UI.Views
 
         public MainCharacterDisplay()
         {
+            Current = 500;
+            Max = 500;
+
             InitializeComponent();
 
             if (Application.Current.IsRunningOutOfBrowser)
@@ -40,6 +45,9 @@ namespace MajorMudX.UI.Views
                 textTrapping.Focus();
             }
         }
+
+        public int Current { get; set; }
+        public int Max { get; set; }
 
         void _socket_MessageRecieved(string message)
         {
@@ -76,8 +84,7 @@ namespace MajorMudX.UI.Views
                     {
                         Run r = MainTextArea.Inlines[MainTextArea.Inlines.Count - 1] as Run;
                         r.Text += segments[i].Text;
-                        if (((SolidColorBrush)r.Foreground).Color == decorator.DefaultColor)
-                            r.Foreground = new SolidColorBrush(segments[i].TextColor);
+                        r.Foreground = new SolidColorBrush(segments[i].TextColor);
                     }
                     else
                     {
@@ -120,5 +127,7 @@ namespace MajorMudX.UI.Views
         {
             textTrapping.Focus();
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

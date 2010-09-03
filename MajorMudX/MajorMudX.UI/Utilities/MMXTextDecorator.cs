@@ -24,10 +24,13 @@ namespace MajorMudX.UI.Utilities
         static Regex _movement;
         static Regex _alsoHere;
         static Regex _exits;
+        static Regex _status;
 
         static RegexOptions _options = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
         string overflow = string.Empty;
+        bool nextSet = false;
+        Color nextColor = Colors.Black;
 
         static MMXTextDecorator()
         {
@@ -36,6 +39,7 @@ namespace MajorMudX.UI.Utilities
             _movement = new Regex(@".*room.*from.*", _options);
             _alsoHere = new Regex(@"^Also here:", _options);
             _exits = new Regex(@"^Obvious exits:", _options);
+            _status = new Regex(@"^\[.*\]:$", _options);
         }
 
         public override IFormattedTextSegment[] ProcessText(string text)
@@ -45,17 +49,19 @@ namespace MajorMudX.UI.Utilities
             Token prev = null;
             for (int i = 0; i < tokens.Length; ++i)
             {
-                if (i == 0 && overflow.Length > 0)
-                    tokens[i].TextColor = PaintToken(overflow + tokens[i].Text);
-                else
-                    tokens[i].TextColor = PaintToken(tokens[i].Text);
-                if (prev != null)
+                if (prev != null && prev.Complete && nextSet)
                 {
-                    if (_alsoHere.IsMatch(prev.Text))
-                        tokens[i].TextColor = Colors.Magenta;
-                    else if (_exits.IsMatch(prev.Text))
-                        tokens[i].TextColor = Colors.Green;
+                    tokens[i].TextColor = nextColor;
+                    nextSet = !tokens[i].Complete;
                 }
+                else
+                {
+                    if (i == 0 && overflow.Length > 0)
+                        tokens[i].TextColor = PaintToken(overflow + tokens[i].Text);
+                    else
+                        tokens[i].TextColor = PaintToken(tokens[i].Text);
+                }
+
                 prev = (Token)tokens[i];
 
                 if (i == tokens.Length - 1 && !(tokens[i].Text.EndsWith("\n") || tokens[i].Text.EndsWith(":")))
@@ -76,9 +82,17 @@ namespace MajorMudX.UI.Utilities
             if (_combatMarker.IsMatch(token))
                 return Colors.Orange;
             if (_alsoHere.IsMatch(token))
+            {
+                nextSet = true;
+                nextColor = Colors.Magenta;
                 return Colors.Purple;
+            }
             if (_exits.IsMatch(token))
+            {
+                nextSet = true;
+                nextColor = Colors.Green;
                 return Colors.Cyan;
+            }
 
             return DefaultColor;
         }
