@@ -3,12 +3,21 @@
     xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:controls="clr-namespace:MajorMudX.UI.Controls"
     mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="400" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit">
+    d:DesignHeight="300" d:DesignWidth="400" x:Name="Host" xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit">
 
     <toolkit:DockPanel VerticalAlignment="Stretch" Name="dockPanel1" HorizontalAlignment="Stretch" LastChildFill="True" Background="Black">
         <TextBox x:Name="textTrapping" Height="0" toolkit:DockPanel.Dock="Right" Width="0" Visibility="Visible" KeyUp="textTrapping_KeyUp" TextChanged="textTrapping_TextChanged"/>
-        
+        <Grid toolkit:DockPanel.Dock="Left" Width="100" Height="{Binding ElementName=dockPanel1, Path=ActualHeight}">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="100" />
+                <RowDefinition Height="25"/>
+                <RowDefinition Height="213*" />
+            </Grid.RowDefinitions>
+            <controls:BubbleGauge HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.Row="0" BubbleColor="DarkRed" BubbleCurrentValue="{Binding ElementName=Host, Path=Current, Mode=TwoWay}" BubbleMaxValue="{Binding ElementName=Host, Path=Max}"/>
+            <TextBlock Text="50 / 100" Foreground="DarkRed" Grid.Row="1" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+        </Grid>
         <Grid GotFocus="Grid_GotFocus">
             <ScrollViewer x:Name="MainTextViewer">
                 <TextBlock x:Name="MainTextArea"/>

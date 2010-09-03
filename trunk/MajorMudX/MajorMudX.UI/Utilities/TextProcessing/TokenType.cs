@@ -13,9 +13,9 @@ namespace MajorMudX.UI.Utilities.TextProcessing
 {
     public enum TokenType
     {
-        AlsoHere,
-        CombatMarker,
-        Damage,
-        Moving
+        Environment,
+        Movement,
+        Combat,
+        Drop
     }
 }
