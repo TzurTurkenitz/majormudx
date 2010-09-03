@@ -27,6 +27,8 @@ namespace MajorMudX.UI.Utilities
 
         static RegexOptions _options = RegexOptions.CultureInvariant | RegexOptions.IgnoreCase;
 
+        string overflow = string.Empty;
+
         static MMXTextDecorator()
         {
             _damage = new Regex(".*damage[.|!]$", _options);
@@ -40,8 +42,27 @@ namespace MajorMudX.UI.Utilities
         {
             IFormattedTextSegment[] tokens = Token.Tokenize(text);
 
+            Token prev = null;
             for (int i = 0; i < tokens.Length; ++i)
-                tokens[i].TextColor = PaintToken(tokens[i].Text);
+            {
+                if (i == 0 && overflow.Length > 0)
+                    tokens[i].TextColor = PaintToken(overflow + tokens[i].Text);
+                else
+                    tokens[i].TextColor = PaintToken(tokens[i].Text);
+                if (prev != null)
+                {
+                    if (_alsoHere.IsMatch(prev.Text))
+                        tokens[i].TextColor = Colors.Magenta;
+                    else if (_exits.IsMatch(prev.Text))
+                        tokens[i].TextColor = Colors.Green;
+                }
+                prev = (Token)tokens[i];
+
+                if (i == tokens.Length - 1 && !(tokens[i].Text.EndsWith("\n") || tokens[i].Text.EndsWith(":")))
+                    overflow = tokens[i].Text;
+                else
+                    overflow = string.Empty;
+            }
 
             return tokens;
         }
