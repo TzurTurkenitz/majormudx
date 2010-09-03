@@ -79,6 +79,7 @@
     <Compile Include="Controls\BubbleGauge.xaml.cs">
       <DependentUpon>BubbleGauge.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Infrastructure\MMXSessionController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\MMXTextDecorator.cs" />
     <Compile Include="Utilities\TextProcessing\Token.cs" />

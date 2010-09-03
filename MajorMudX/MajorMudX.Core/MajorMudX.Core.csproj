@@ -57,6 +57,7 @@
   <ItemGroup>
     <Compile Include="CharacterManagement\CharacterBase.cs" />
     <Compile Include="CharacterManagement\ICharacter.cs" />
+    <Compile Include="Infrastructure\ISessionController.cs" />
     <Compile Include="Injection\AppHostController.cs" />
     <Compile Include="Injection\CreateNewAttribute.cs" />
     <Compile Include="Injection\HostControllerAttribute.cs" />

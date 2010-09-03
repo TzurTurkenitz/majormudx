@@ -27,17 +27,20 @@ namespace MajorMudX.UI.Views
         TelnetSocket _socket;
         ObjectResolver _resolver;
         IFormattedTextSegment _lastSegment;
+        ITextDecorator _decorator;
 
         public MainCharacterDisplay()
         {
-            Current = 500;
-            Max = 500;
-
+            Current = 10;
+            Max = 10;
             InitializeComponent();
 
             if (Application.Current.IsRunningOutOfBrowser)
             {
                 _resolver = new ObjectResolver();
+                MMXTextDecorator decorator = new MMXTextDecorator();
+                decorator.UpdateHealth += new EventHandler<MMXTextDecorator.HealthUpdateEventArgs>(decorator_UpdateHealth);
+                _decorator = decorator;
                 _resolver.Create<ITextDecorator, MMXTextDecorator>();
                 _socket = new TelnetSocket("MajorMUD.DontExist.com", 23);
                 _socket.MessageRecieved += new TelnetSocket.IncomingMessageHandler(_socket_MessageRecieved);
@@ -46,8 +49,23 @@ namespace MajorMudX.UI.Views
             }
         }
 
+        void decorator_UpdateHealth(object sender, MMXTextDecorator.HealthUpdateEventArgs e)
+        {
+            Current = e.Current;
+            Max = Math.Max(Max, e.Max);
+
+            if (PropertyChanged != null)
+            {
+                PropertyChanged(this, new PropertyChangedEventArgs("Current"));
+                PropertyChanged(this, new PropertyChangedEventArgs("Max"));
+                PropertyChanged(this, new PropertyChangedEventArgs("HPTotal"));
+            }
+        }
+
         public int Current { get; set; }
         public int Max { get; set; }
+
+        public string HPTotal { get { return string.Format("{0}/{1}", Current, Max); } }
 
         void _socket_MessageRecieved(string message)
         {
@@ -73,8 +91,7 @@ namespace MajorMudX.UI.Views
                         sb.Append(c);
                 }
 
-                ITextDecorator decorator = _resolver.Get<ITextDecorator>();
-                IFormattedTextSegment[] segments = decorator.ProcessText(sb.ToString());
+                IFormattedTextSegment[] segments = _decorator.ProcessText(sb.ToString());
 
                 for (int i = 0; i < segments.Length; ++i)
                 {
