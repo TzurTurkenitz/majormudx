@@ -31,8 +31,8 @@ namespace MajorMudX.UI.Views
 
         public MainCharacterDisplay()
         {
-            Current = 10;
-            Max = 10;
+            Current = 5;
+            Max = 74;
             InitializeComponent();
 
             if (Application.Current.IsRunningOutOfBrowser)
