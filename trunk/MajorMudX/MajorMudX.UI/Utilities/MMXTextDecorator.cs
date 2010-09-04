@@ -78,7 +78,7 @@ namespace MajorMudX.UI.Utilities
                     s = s.Replace("[", "").Replace("]", "").Replace(":", "");
 
                     int n;
-                    if (int.TryParse(s.Split('=')[1], out n))
+                    if (int.TryParse(s.Split('=')[1].Split(' ')[0], out n))
                         if (UpdateHealth != null)
                             UpdateHealth(this, new HealthUpdateEventArgs() { Current = n, Max = n });
                 }
