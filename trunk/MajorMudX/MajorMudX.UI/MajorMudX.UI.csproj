@@ -84,11 +84,17 @@
     <Compile Include="Utilities\MMXTextDecorator.cs" />
     <Compile Include="Utilities\TextProcessing\Token.cs" />
     <Compile Include="Utilities\TextProcessing\TokenType.cs" />
-    <Compile Include="Views\MainCharacterDisplay.xaml.cs">
-      <DependentUpon>MainCharacterDisplay.xaml</DependentUpon>
+    <Compile Include="Views\CharacterLayoutHostView.xaml.cs">
+      <DependentUpon>CharacterLayoutHostView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Views\StatusView.xaml.cs">
       <DependentUpon>StatusView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\TextWindowView.xaml.cs">
+      <DependentUpon>TextWindowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Views\WidgetContainterView.xaml.cs">
+      <DependentUpon>WidgetContainterView.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
@@ -105,11 +111,19 @@
       <Generator>MSBuild:Compile</Generator>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
-    <Page Include="Views\MainCharacterDisplay.xaml">
+    <Page Include="Views\CharacterLayoutHostView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Views\StatusView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\TextWindowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\WidgetContainterView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
