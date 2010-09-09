@@ -20,7 +20,7 @@
 
     <Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
         <Border Style="{StaticResource MMXBorderStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ScrollViewer x:Name="svMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MMXScrollViewerStyle}">
+            <ScrollViewer x:Name="svMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MMXScrollViewerStyle}" Background="Black">
                 <TextBlock x:Name="tblkMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
             </ScrollViewer>
         </Border>

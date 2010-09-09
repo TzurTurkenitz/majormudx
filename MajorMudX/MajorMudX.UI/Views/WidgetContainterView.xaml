@@ -20,7 +20,7 @@
     <Grid x:Name="LayoutRoot">
 
         <Border Style="{StaticResource MMXBorderStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Button x:Name="btnSelect" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Add Widget"/>
+            <Button x:Name="btnSelect" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Add Widget" Style="{StaticResource MMXButtonStyle}"/>
         </Border>
     </Grid>
 </UserControl>

@@ -29,31 +29,11 @@
                 <RowDefinition Height="18" />
                 <RowDefinition Height="18" />
             </Grid.RowDefinitions>
-            <sdk:Label HorizontalAlignment="Left" Name="lblHp" VerticalAlignment="Center" Content="Health:"/>
-            <ProgressBar VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="0" Minimum="0" Value="50" Maximum="{Binding Path=MaxHp, FallbackValue=100}">
-                <ProgressBar.Background>
-                    <SolidColorBrush Color="Black"/>
-                </ProgressBar.Background>
-                <ProgressBar.Foreground>
-                    <LinearGradientBrush Opacity="1">
-                        <GradientStop Color="DarkRed" Offset="0"/>
-                        <GradientStop Color="DarkRed" Offset="1"/>
-                    </LinearGradientBrush>
-                </ProgressBar.Foreground>
-            </ProgressBar>
+            <sdk:Label HorizontalAlignment="Right" Name="lblHp" VerticalAlignment="Center" Content="Health:"/>
+            <ProgressBar Style="{StaticResource MMXProgressBar}" VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="0" Minimum="0" Value="50" Maximum="{Binding Path=MaxHp, FallbackValue=100}" Foreground="{StaticResource MMXRedChromeFill}"/>
 
-            <sdk:Label HorizontalAlignment="Left" Name="lblMana" Grid.Row="1" VerticalAlignment="Center" Content="Mana:"/>
-            <ProgressBar VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="1" Minimum="0" Value="75" Maximum="{Binding Path=MaxHp, FallbackValue=100}">
-                <ProgressBar.Background>
-                    <SolidColorBrush Color="Black"/>
-                </ProgressBar.Background>
-                <ProgressBar.Foreground>
-                    <LinearGradientBrush Opacity="1">
-                        <GradientStop Color="DarkBlue" Offset="0"/>
-                        <GradientStop Color="DarkBlue" Offset="1"/>
-                    </LinearGradientBrush>
-                </ProgressBar.Foreground>
-            </ProgressBar>
+            <sdk:Label HorizontalAlignment="Right" Name="lblMana" Grid.Row="1" VerticalAlignment="Center" Content="Mana:"/>
+            <ProgressBar Style="{StaticResource MMXProgressBar}" VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="1" Minimum="0" Value="75" Maximum="{Binding Path=MaxHp, FallbackValue=100}" Foreground="{StaticResource MMXBlueChromeFill}"/>
         </Grid>
     </Border>
 </UserControl>
