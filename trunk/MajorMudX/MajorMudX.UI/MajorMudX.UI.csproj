@@ -87,6 +87,9 @@
     <Compile Include="Views\CharacterLayoutHostView.xaml.cs">
       <DependentUpon>CharacterLayoutHostView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Views\ConversationBoxView.xaml.cs">
+      <DependentUpon>ConversationBoxView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\StatusView.xaml.cs">
       <DependentUpon>StatusView.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,10 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Page>
     <Page Include="Views\CharacterLayoutHostView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Views\ConversationBoxView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
