@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
     d:DesignHeight="300" d:DesignWidth="400">
-    
+
     <UserControl.Resources>
         <ResourceDictionary>
             <ResourceDictionary.MergedDictionaries>
@@ -19,10 +19,8 @@
     </UserControl.Style>
 
     <Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-        <Border Style="{StaticResource MMXBorderStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <ScrollViewer x:Name="svMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MMXScrollViewerStyle}" Background="Black">
-                <TextBlock x:Name="tblkMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-            </ScrollViewer>
-        </Border>
+        <ScrollViewer x:Name="svMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MMXScrollViewerStyle}">
+            <TextBlock x:Name="tblkMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        </ScrollViewer>
     </Grid>
 </UserControl>
