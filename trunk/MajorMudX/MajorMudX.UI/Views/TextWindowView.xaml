@@ -4,7 +4,7 @@
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     mc:Ignorable="d"
-    d:DesignHeight="300" d:DesignWidth="400">
+    d:DesignHeight="300" d:DesignWidth="400" Loaded="UserControl_Loaded">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -18,9 +18,11 @@
         <Binding Source="{StaticResource MMXUCStyle}"/>
     </UserControl.Style>
 
-    <Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
+    <Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" GotFocus="LayoutRoot_GotFocus">
+        <TextBox Visibility="Visible" Height="0" Width="0" Background="Transparent" x:Name="tbxCaptureText" KeyUp="tbxCaptureText_KeyDown"/>
         <ScrollViewer x:Name="svMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MMXScrollViewerStyle}">
-            <TextBlock x:Name="tblkMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+            <TextBlock x:Name="tblkMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap">
+            </TextBlock>
         </ScrollViewer>
     </Grid>
 </UserControl>

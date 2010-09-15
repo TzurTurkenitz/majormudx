@@ -18,9 +18,8 @@
     </UserControl.Style>
 
     <Grid x:Name="LayoutRoot">
-
-        <Border Style="{StaticResource MMXBorderStyle}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch">
-            <Button x:Name="btnSelect" HorizontalAlignment="Center" VerticalAlignment="Center" Content="Activate Plugin" Style="{StaticResource MMXButtonStyle}"/>
+        <Border Style="{StaticResource MMXBorderStyle}" HorizontalAlignment="Center" VerticalAlignment="Center">
+            <Button x:Name="btnSelect" Content="Activate Plugin" Style="{StaticResource MMXButtonStyle}"/>
         </Border>
     </Grid>
 </UserControl>

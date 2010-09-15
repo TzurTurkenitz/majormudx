@@ -5,7 +5,7 @@
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
     xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"  
     mc:Ignorable="d"
-    d:DesignHeight="40" d:DesignWidth="388">
+    d:DesignHeight="40" d:DesignWidth="388" Loaded="UserControl_Loaded" x:Name="ucStatus">
 
     <UserControl.Resources>
         <ResourceDictionary>
@@ -30,10 +30,10 @@
                 <RowDefinition Height="18" />
             </Grid.RowDefinitions>
             <sdk:Label HorizontalAlignment="Right" Name="lblHp" VerticalAlignment="Center" Content="Health:"/>
-            <ProgressBar Style="{StaticResource MMXProgressBar}" VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="0" Minimum="0" Value="50" Maximum="{Binding Path=MaxHp, FallbackValue=100}" Foreground="{StaticResource MMXRedChromeFill}"/>
+            <ProgressBar Style="{StaticResource MMXProgressBar}" VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="0" Minimum="0" Value="{Binding ElementName=ucStatus, Path=CurrentHP, Mode=TwoWay, FallbackValue=1}" Maximum="{Binding ElementName=ucStatus, Path=MaxHP, Mode=TwoWay, FallbackValue=100}" Foreground="{StaticResource MMXRedChromeFill}"/>
 
             <sdk:Label HorizontalAlignment="Right" Name="lblMana" Grid.Row="1" VerticalAlignment="Center" Content="Mana:"/>
-            <ProgressBar Style="{StaticResource MMXProgressBar}" VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="1" Minimum="0" Value="75" Maximum="{Binding Path=MaxHp, FallbackValue=100}" Foreground="{StaticResource MMXBlueChromeFill}"/>
+            <ProgressBar Style="{StaticResource MMXProgressBar}" VerticalAlignment="Stretch" FlowDirection="LeftToRight" Grid.Column="1" Grid.Row="1" Minimum="0" Value="75" Maximum="{Binding Path=MaxMp, FallbackValue=100}" Foreground="{StaticResource MMXBlueChromeFill}"/>
         </Grid>
     </Border>
 </UserControl>
