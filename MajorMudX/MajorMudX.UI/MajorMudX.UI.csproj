@@ -76,9 +76,9 @@
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Controls\BubbleGauge.xaml.cs">
-      <DependentUpon>BubbleGauge.xaml</DependentUpon>
-    </Compile>
+    <Compile Include="Infrastructure\BBSRequestResponse.cs" />
+    <Compile Include="Infrastructure\CharacterInfo.cs" />
+    <Compile Include="Infrastructure\DeathrowBBS.cs" />
     <Compile Include="Infrastructure\MMXSessionController.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\MMXTextDecorator.cs" />
@@ -105,10 +105,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
-    <Page Include="Controls\BubbleGauge.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MMXStylingResource.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

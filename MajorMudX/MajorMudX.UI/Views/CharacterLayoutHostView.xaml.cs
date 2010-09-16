@@ -14,6 +14,7 @@ using MajorMudX.Core.Infrastructure;
 using MajorMudX.Core.Sockets;
 using MajorMudX.Core.UI.Text;
 using MajorMudX.UI.Utilities.TextProcessing;
+using MajorMudX.UI.Infrastructure;
 
 namespace MajorMudX.UI.Views
 {
@@ -21,17 +22,19 @@ namespace MajorMudX.UI.Views
     public partial class CharacterLayoutHostView : UserControl
     {
         TelnetSocket _socket;
+        ISessionController _session;
         string _lastToken;
 
         public void Write(string msg)
         {
-            if (_socket.IsConnected) _socket.Write(msg);
+            _session.Write(msg);
         }
 
         public CharacterLayoutHostView()
         {
             InitializeComponent();
             _lastToken = null;
+            _session = new MMXSessionController(new CharacterInfo(), new DeathrowBBS());
         }
 
         void _socket_MessageRecieved(string message)
@@ -75,6 +78,8 @@ namespace MajorMudX.UI.Views
             }
         }
 
+        //http://www.majormud.com/mudhelp_gamesettings.html
+
         public ITextRenderer TextRenderer { get; set; }
         public StatusView Status { get; set; }
 
@@ -82,17 +87,23 @@ namespace MajorMudX.UI.Views
         {
             if (Application.Current.HasElevatedPermissions && Application.Current.IsRunningOutOfBrowser)
             {
-                _socket = new TelnetSocket("deathrow.dyndns.org", 23);
-                _socket.MessageRecieved += new TelnetSocket.IncomingMessageHandler(_socket_MessageRecieved);
                 try
                 {
-                    _socket.Connect();
+                    _session.SessionMessageRecieved += new EventHandler<SessionMessageEventArgs>(_session_SessionMessageRecieved);
+
+                    if (_session.CurrentState == SessionState.NOT_STARTED)
+                        _session.Login();
                 }
                 catch (Exception ex)
                 {
                     MessageBox.Show(ex.ToString(), "Error", MessageBoxButton.OK);
                 }
             }
+        }
+
+        void _session_SessionMessageRecieved(object sender, SessionMessageEventArgs e)
+        {
+            _socket_MessageRecieved(e.Message);
         }
     }
 }
