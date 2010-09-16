@@ -58,7 +58,10 @@
     <Compile Include="CharacterManagement\CharacterBase.cs" />
     <Compile Include="CharacterManagement\ICharacter.cs" />
     <Compile Include="Configuration\TextFormattingConfiguration.cs" />
+    <Compile Include="Infrastructure\IBBSInfo.cs" />
+    <Compile Include="Infrastructure\IRequestResponse.cs" />
     <Compile Include="Infrastructure\ISessionController.cs" />
+    <Compile Include="Infrastructure\ISessionCredentials.cs" />
     <Compile Include="Infrastructure\ITextRenderer.cs" />
     <Compile Include="Injection\AppHostController.cs" />
     <Compile Include="Injection\CreateNewAttribute.cs" />
