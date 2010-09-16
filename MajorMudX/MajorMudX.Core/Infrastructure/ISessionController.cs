@@ -13,14 +13,30 @@ namespace MajorMudX.Core.Infrastructure
 {
     public interface ISessionController
     {
-        void RegisterEvent<T>(string id, T handler) 
-            where T : class;
+        void Login();
+        void Write(string message);
 
-        void RegisterService<TInt, TImp>(string id, TImp obj)
-            where TInt : class
-            where TImp : class;
+        SessionState CurrentState { get; }
 
-        TInt GetService<TInt>(string id)
-            where TInt : class;
+        event EventHandler<SessionMessageEventArgs> SessionMessageRecieved;
+    }
+
+    public class SessionMessageEventArgs : EventArgs
+    {
+        public SessionMessageEventArgs(string message)
+        {
+            Message = message;
+        }
+
+        public string Message { get; private set; }
+    }
+
+    public enum SessionState
+    {
+        NOT_STARTED,
+        PRE_LOGIN,
+        LOGIN,
+        CONNECTED,
+        DISCONNECTED
     }
 }
