@@ -29,9 +29,5 @@ namespace MajorMudX.Core.UI.Text
         }
 
         public bool Complete { get { return true; } }
-
-        public DisplayText()
-        {
-        }
     }
 }
