@@ -15,15 +15,16 @@ using MajorMudX.Core.Sockets;
 using MajorMudX.Core.UI.Text;
 using MajorMudX.UI.Utilities.TextProcessing;
 using MajorMudX.UI.Infrastructure;
+using MajorMudX.Core.Utilities.Text;
 
 namespace MajorMudX.UI.Views
 {
     [CharacterHost]
     public partial class CharacterLayoutHostView : UserControl
     {
-        TelnetSocket _socket;
         ISessionController _session;
         string _lastToken;
+        ANSIFormatting _ansiFormatter = new ANSIFormatting();
 
         public void Write(string msg)
         {
@@ -34,48 +35,53 @@ namespace MajorMudX.UI.Views
         {
             InitializeComponent();
             _lastToken = null;
-            _session = new MMXSessionController(new CharacterInfo(), new DeathrowBBS());
+            _session = new MMXSessionController(new CharacterInfo(), new MudRevBBS());
         }
 
         void _socket_MessageRecieved(string message)
         {
-            Token[] tokens = Token.Tokenize(message);
+            IFormattedTextSegment[] tokens = _ansiFormatter.ProcessText(message);
 
-            if (tokens.Length > 0 && TextRenderer != null)
-            {
-                if (_lastToken != null)
-                    _lastToken += tokens[0].Text;
+            foreach (IFormattedTextSegment token in tokens)
+                TextRenderer.RenderText(token);
 
-                for (int i = 0; i < tokens.Length; ++i)
-                {
-                    if (_lastToken != null)
-                    {
-                        if (tokens[i].Complete)
-                            _lastToken = null;
-                    }
-                    else if (tokens[i].Text.StartsWith("[HP"))
-                    {
-                        string current = tokens[i].Text.Remove(tokens[i].Text.IndexOf(']')).Split('=')[1];
-                        if (current.Contains(' '))
-                            current = current.Remove(current.IndexOf(' '));
-                        int n;
-                        if (int.TryParse(current, out n))
-                        {
-                            if (Status != null)
-                                Status.CurrentHP = n;
-                            else
-                                TextRenderer.RenderText(new DisplayText() { Text = "Bad Monkey", TextColor = Colors.Blue });
-                        }
-                        else
-                            TextRenderer.RenderText(new DisplayText() { Text = "Bad Monkey", TextColor = Colors.Red });
-                        continue; // don't show status updates
-                    }
-                    else
-                        tokens[i].TextColor = Colors.Gray;
+            //Token[] tokens = Token.Tokenize(message);
 
-                    TextRenderer.RenderText(tokens[i]);
-                }
-            }
+            //if (tokens.Length > 0 && TextRenderer != null)
+            //{
+            //    if (_lastToken != null)
+            //        _lastToken += tokens[0].Text;
+
+            //    for (int i = 0; i < tokens.Length; ++i)
+            //    {
+            //        if (_lastToken != null)
+            //        {
+            //            if (tokens[i].Complete)
+            //                _lastToken = null;
+            //        }
+            //        else if (tokens[i].Text.StartsWith("[HP"))
+            //        {
+            //            string current = tokens[i].Text.Remove(tokens[i].Text.IndexOf(']')).Split('=')[1];
+            //            if (current.Contains(' '))
+            //                current = current.Remove(current.IndexOf(' '));
+            //            int n;
+            //            if (int.TryParse(current, out n))
+            //            {
+            //                if (Status != null)
+            //                    Status.CurrentHP = n;
+            //                else
+            //                    TextRenderer.RenderText(new DisplayText() { Text = "Bad Monkey", TextColor = Colors.Blue });
+            //            }
+            //            else
+            //                TextRenderer.RenderText(new DisplayText() { Text = "Bad Monkey", TextColor = Colors.Red });
+            //            continue; // don't show status updates
+            //        }
+            //        else
+            //            tokens[i].TextColor = Colors.Gray;
+
+            //        TextRenderer.RenderText(tokens[i]);
+            //    }
+            //}
         }
 
         //http://www.majormud.com/mudhelp_gamesettings.html
