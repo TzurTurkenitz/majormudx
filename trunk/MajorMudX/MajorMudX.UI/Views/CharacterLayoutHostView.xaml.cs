@@ -23,12 +23,13 @@ namespace MajorMudX.UI.Views
     public partial class CharacterLayoutHostView : UserControl
     {
         ISessionController _session;
+        TelnetSocket _socket;
         string _lastToken;
         ANSIFormatting _ansiFormatter = new ANSIFormatting();
 
         public void Write(string msg)
         {
-            _session.Write(msg);
+            _socket.Write(msg);
         }
 
         public CharacterLayoutHostView()
@@ -36,54 +37,9 @@ namespace MajorMudX.UI.Views
             InitializeComponent();
             _lastToken = null;
             _session = new MMXSessionController(new CharacterInfo(), new MudRevBBS());
+            _socket = new TelnetSocket("MajorMud.DontExist.com");
         }
-
-        void _socket_MessageRecieved(string message)
-        {
-            IFormattedTextSegment[] tokens = _ansiFormatter.ProcessText(message);
-
-            foreach (IFormattedTextSegment token in tokens)
-                TextRenderer.RenderText(token);
-
-            //Token[] tokens = Token.Tokenize(message);
-
-            //if (tokens.Length > 0 && TextRenderer != null)
-            //{
-            //    if (_lastToken != null)
-            //        _lastToken += tokens[0].Text;
-
-            //    for (int i = 0; i < tokens.Length; ++i)
-            //    {
-            //        if (_lastToken != null)
-            //        {
-            //            if (tokens[i].Complete)
-            //                _lastToken = null;
-            //        }
-            //        else if (tokens[i].Text.StartsWith("[HP"))
-            //        {
-            //            string current = tokens[i].Text.Remove(tokens[i].Text.IndexOf(']')).Split('=')[1];
-            //            if (current.Contains(' '))
-            //                current = current.Remove(current.IndexOf(' '));
-            //            int n;
-            //            if (int.TryParse(current, out n))
-            //            {
-            //                if (Status != null)
-            //                    Status.CurrentHP = n;
-            //                else
-            //                    TextRenderer.RenderText(new DisplayText() { Text = "Bad Monkey", TextColor = Colors.Blue });
-            //            }
-            //            else
-            //                TextRenderer.RenderText(new DisplayText() { Text = "Bad Monkey", TextColor = Colors.Red });
-            //            continue; // don't show status updates
-            //        }
-            //        else
-            //            tokens[i].TextColor = Colors.Gray;
-
-            //        TextRenderer.RenderText(tokens[i]);
-            //    }
-            //}
-        }
-
+        
         //http://www.majormud.com/mudhelp_gamesettings.html
 
         public ITextRenderer TextRenderer { get; set; }
@@ -95,10 +51,12 @@ namespace MajorMudX.UI.Views
             {
                 try
                 {
-                    _session.SessionMessageRecieved += new EventHandler<SessionMessageEventArgs>(_session_SessionMessageRecieved);
+                    _socket.MessageRecieved += new EventHandler<MessageRecievedEventArgs>(socket_MessageRecieved);
+                    _socket.Connect();
+                    //_session.SessionMessageRecieved += new EventHandler<SessionMessageEventArgs>(_session_SessionMessageRecieved);
 
-                    if (_session.CurrentState == SessionState.NOT_STARTED)
-                        _session.Login();
+                    //if (_session.CurrentState == SessionState.NOT_STARTED)
+                    //    _session.Login();
                 }
                 catch (Exception ex)
                 {
@@ -107,9 +65,10 @@ namespace MajorMudX.UI.Views
             }
         }
 
-        void _session_SessionMessageRecieved(object sender, SessionMessageEventArgs e)
+        void socket_MessageRecieved(object sender, MessageRecievedEventArgs e)
         {
-            _socket_MessageRecieved(e.Message);
+            foreach (IFormattedTextSegment token in e.Segments)
+                TextRenderer.RenderText(token);
         }
     }
 }

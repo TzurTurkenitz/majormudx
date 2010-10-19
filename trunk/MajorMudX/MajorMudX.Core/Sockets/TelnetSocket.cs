@@ -1,297 +1,322 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using System.Text;
+using System.Threading;
+using System.Windows.Media;
+using MajorMudX.Core.UI.Text;
 
 namespace MajorMudX.Core.Sockets
 {
-    /* Process for connecting
-         * -------------------------
-         * 1. Create the socket and connect.
-         * 2. Negotiate options
-         *      a. Server sends options it will/wont do
-         *      b. Client responds with actions it will/won't support
-         *      c. Option for Subnegotation
-         *      d. Complete Subnegotation
-         * 3. Connection is established and client can communicate with server 
-         */
-
-    /// <summary>
-    /// Manages a Telnet Encoded TCP Socket.
-    /// </summary>
-    public sealed class TelnetSocket
+    public class TelnetSocket
     {
-        Socket _socket;
-        EndPoint _address;
+        private Queue<byte[]> _buffer;
+        private Socket _socket;
+        private EndPoint _address;
+        private TelnetOptionFlags _flags;
+        private TelnetOptionFlags _negotiated;
+        private AutoResetEvent _writeLock;
+        private byte[] _overflow;
+        private bool _nawsEnabled = false;
 
-        string _dnsHost;
-        int _port;
+        public string IPAddress { get; set; }
 
-        #region Constructors
-
-        public TelnetSocket()
+        public TelnetSocket(string address)
         {
-            _dnsHost = string.Empty;
-            _port = -1;
+            _address = new DnsEndPoint(address, 23);
+            _buffer = new Queue<byte[]>();
+            _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
+            _flags = TelnetOptionFlags.Echo | TelnetOptionFlags.SupressGoAhead;
+            _negotiated = TelnetOptionFlags.None;
+            _writeLock = new AutoResetEvent(false);
         }
 
-        public TelnetSocket(string dnsAddress)
+        public TelnetSocket(string address, TelnetOptionFlags options)
+            : this(address)
         {
-            _dnsHost = dnsAddress;
-            _port = 23;
+            _flags |= options;
         }
 
-        public TelnetSocket(string dnsAddress, int port)
-        {
-            _dnsHost = dnsAddress;
-            _port = port;
-        }
+        public bool IsEnabled(TelnetOptionFlags flag) { return (_flags & flag) > 0; }
+        public void Enable(TelnetOptionFlags flag) { _flags |= flag; }
+        public void Disable(TelnetOptionFlags flag) { _flags &= ~flag; }
 
-        #endregion
+        public bool Connected { get { return _socket.Connected; } }
 
-        #region Properties
-
-        public bool IsConnected
-        {
-            get
-            {
-                return _socket == null ? false : _socket.Connected;
-            }
-        }
-
-        public string DnsHost
-        {
-            get
-            {
-                return _dnsHost;
-            }
-            set
-            {
-                if (!IsConnected)
-                    _dnsHost = value;
-                else
-                    throw new InvalidOperationException("Cannot change the address on an active socket connection");
-            }
-        }
-
-        public int Port
-        {
-            get
-            {
-                return _port;
-            }
-            set
-            {
-                if (!IsConnected)
-                    _port = value;
-                else
-                    throw new InvalidOperationException("Cannot change the port on an active socket connection");
-            }
-        }
-
-        #endregion
-
-        #region Events
-
-        public delegate void IncomingMessageHandler(string message);
-        public event IncomingMessageHandler MessageRecieved;
-
-        #endregion
-
-        #region Public Methods
+        public event EventHandler<TelnetNegotiationEventArgs> NegotiationCompleted;
+        public event EventHandler<MessageRecievedEventArgs> MessageRecieved;
 
         public void Connect()
         {
-            if (_port < 0 || string.IsNullOrEmpty(_dnsHost))
-                throw new InvalidOperationException("The socket has not been fully configured for communication!");
-
-            if (_socket == null)
-                _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-
-            if (_socket.Connected)
-                throw new InvalidOperationException("Cannot connect to a socket that is already open");
-
-            _address = new DnsEndPoint(_dnsHost, _port);
+            if (_socket.Connected) return;
 
             SocketAsyncEventArgs args = new SocketAsyncEventArgs();
             args.UserToken = _socket;
             args.RemoteEndPoint = _address;
-            args.Completed += new EventHandler<SocketAsyncEventArgs>(ProcessSocketEvent);
+            args.Completed += new EventHandler<SocketAsyncEventArgs>(AsyncCompletedHandler);
+
+            // initialize the overflow
+            _overflow = new byte[0];
+
+            // start a new thread to watch for responses
+            new Thread(new ThreadStart(ParseResponse)).Start();
 
             _socket.ConnectAsync(args);
         }
 
         public void Write(string message)
         {
-            // format the message for telnet
-            message = message.Replace("\n", "\r\n");
+            if (_socket.Connected)
+            {
+                SocketAsyncEventArgs args = new SocketAsyncEventArgs();
+                message = message.Replace("\n", "\n\r");
+                byte[] data = new byte[message.Length];
+                for (int i = 0; i < data.Length; ++i)
+                {
+                    char c = message[i];
+                    if (c == '\b')
+                    {
+                        Array.Resize<byte>(ref data, data.Length + 1);
+                        data[i++] = (byte)TelnetCommands.IAC;
+                        data[i] = (byte)TelnetCommands.EraseCharacter;
+                    }
+                    else
+                        data[i] = (byte)c;
+                }
+
+                args.SetBuffer(data, 0, data.Length);
+                args.UserToken = _socket;
+                args.RemoteEndPoint = _address;
+                args.Completed += new EventHandler<SocketAsyncEventArgs>(AsyncCompletedHandler);
+
+                _socket.SendAsync(args);
+            }
+        }
+
+        void AsyncCompletedHandler(object sender, SocketAsyncEventArgs e)
+        {
+            if (e.ConnectByNameError != null)
+                return; // handle the error later
+
+            if (e.SocketError != SocketError.Success)
+                return; // handle the error later
+
+            if (e.LastOperation == SocketAsyncOperation.Receive)
+                EnqueueResponse(e);
 
             SocketAsyncEventArgs args = new SocketAsyncEventArgs();
             args.UserToken = _socket;
             args.RemoteEndPoint = _address;
-            args.Completed += new EventHandler<SocketAsyncEventArgs>(ProcessSocketEvent);
-
-            if (message == "\b")
-                args.SetBuffer(new byte[] { (byte)TelnetCommands.IAC, (byte)TelnetCommands.EraseCharacter }, 0, 2);
-            else
-            {
-                byte[] buffer = new byte[message.Length];
-
-                for (int i = 0; i < buffer.Length; ++i)
-                    buffer[i] = (byte)message[i];
-
-                args.SetBuffer(buffer, 0, buffer.Length);
-            }
-
-            _socket.SendAsync(args);
+            args.Completed += new EventHandler<SocketAsyncEventArgs>(AsyncCompletedHandler);
+            args.SetBuffer(new byte[1024], 0, 1024);
+            _socket.ReceiveAsync(args);
         }
 
-        #endregion
-
-        #region SocketEventHandlers
-
-        void ProcessSocketEvent(object sender, SocketAsyncEventArgs e)
+        void EnqueueResponse(SocketAsyncEventArgs e)
         {
-            if (e.ConnectByNameError != null)
+            lock (_buffer)
             {
-                // there was a problem connecting to the host
-                return;
+                byte[] data = new byte[e.BytesTransferred];
+                Array.Copy(e.Buffer, e.Offset, data, 0, e.BytesTransferred);
+                _buffer.Enqueue(data);
             }
 
-            if (e.SocketError == SocketError.Success)
-            {
-                SocketAsyncEventArgs args = new SocketAsyncEventArgs();
-                args.UserToken = _socket;
-                args.RemoteEndPoint = _address;
-                args.Completed += new EventHandler<SocketAsyncEventArgs>(ProcessSocketEvent);
-
-                switch (e.LastOperation)
-                {
-                    case SocketAsyncOperation.Connect:
-                        // begin reading from the stream
-                        try
-                        {
-                            args.SetBuffer(new byte[1024], 0, 1024);
-                            _socket.ReceiveAsync(args);
-                        }
-                        catch (Exception ex)
-                        {
-                        }
-                        break;
-                    case SocketAsyncOperation.Send:
-                        // start listening again
-                        args.SetBuffer(new byte[1024], 0, 1024);
-                        _socket.ReceiveAsync(args);
-                        break;
-                    case SocketAsyncOperation.Receive:
-                        byte[] response;
-                        string text = ProcessStream(e.Buffer, e.Offset, e.BytesTransferred, out response);
-
-                        if (response.Length > 0) // need to write the response
-                        {
-                            args.SetBuffer(response, 0, response.Length);
-                            _socket.SendAsync(args);
-                        }
-                        else if (text.Length > 0) // keep listening
-                        {
-                            args.SetBuffer(new byte[1024], 0, 1024);
-                            _socket.ReceiveAsync(args);
-                        }
-
-                        if (MessageRecieved != null)
-                            MessageRecieved(text);
-
-                        break;
-                    default:
-                        break;
-                }
-            }
-            else
-            {
-                // handle the socket error
-            }
+            // notify the parser that it can proceed
+            _writeLock.Set();
         }
 
-        string ProcessStream(byte[] bytes, int offset, int bytesTransmitted, out byte[] response)
+        const byte ESC = 0x1B;
+
+        void ParseResponse()
         {
-            response = new byte[0];
-            StringBuilder sb = new StringBuilder();
+            // track the current color that should be applied to the text
+            Color currentColor = Colors.Cyan;//Color.FromArgb(0xFF, 0x0, 0x0, 0x0);
 
-            for (int i = 0; i < bytesTransmitted; ++i)
+            do
             {
-                int n = i + offset;
-                byte b = bytes[n];
+                // wait for input
+                _writeLock.WaitOne();
 
-                // check for a telnet command
-                if (TelnetCommands.IAC == (TelnetCommands)b)
+                // reset the lock
+                _writeLock.Reset();
+
+                // create an array to hold the bytes
+                byte[] data = new byte[_overflow.Length];
+
+                // copy any overflow bytes into the array
+                Array.Copy(_overflow, data, _overflow.Length);
+
+                // clear the overflow
+                _overflow = new byte[0];
+
+                // lock the buffer to keep additional data entry
+                lock (_buffer)
                 {
-                    byte[] resp = ProcessCommand(bytes, n + 1);
-                    if (resp.Length > 0)
+                    // append each block in the buffer to the data array
+                    while (_buffer.Count > 0)
                     {
-                        Array.Resize<byte>(ref response, response.Length + resp.Length);
-                        resp.CopyTo(response, response.Length - resp.Length);
+                        byte[] next = _buffer.Dequeue();
+                        Array.Resize<byte>(ref data, data.Length + next.Length);
+                        Array.Copy(next, 0, data, data.Length - next.Length, next.Length);
                     }
-                    i += 2;
                 }
-                else // process it normally
+
+                // begin processing the bytes
+
+                // check if consumer supports ansi
+                bool ansi = _flags.Contains(TelnetOptionFlags.ANSI);
+
+                // create a list to hold the segments
+                List<IFormattedTextSegment> segments = new List<IFormattedTextSegment>();
+
+                // create a string builder to construct segments
+                StringBuilder segment = new StringBuilder();
+
+                // create a byte array to store any response to server requests
+                byte[] response = new byte[0];
+
+                // process the entire byte stream
+                for (int i = 0; i < data.Length; ++i)
                 {
-                    char c = (char)b;
-                    if (c == '\b' && sb.Length > 0)
-                        sb.Remove(sb.Length - 1, 1);
-                    else if (c != '\r') // these mess with the text
-                        sb.Append(c);
+                    if (data[i] == ESC) // ansi escape
+                    {
+                        Color background = Colors.Black;
+                        int row = 0, col = 0;
+
+                        if (segment.Length > 0)
+                        {
+                            segments.Add(new DisplayText() { Text = segment.ToString(), TextColor = currentColor });
+                            segment.Clear();
+                        }
+
+                        int processed = AnsiProcessor.ReadCommand(data, i, ref row, ref col, ref background, ref currentColor);
+
+                        if (processed < 0) // fragment
+                        {
+                            _overflow = new byte[data.Length - i];
+                            Array.Copy(data, i, _overflow, 0, _overflow.Length);
+                            break;
+                        }
+
+
+                        i += processed; // advance past the command
+
+                        continue;
+                    }
+                    else if (data[i] == TelnetCommands.IAC.Translate()) // process the telnet command
+                    {
+                        TelnetCommands command = data[++i].ToTelnetCommand();
+
+                        // subnegotiation so there will be more data
+                        if (command == TelnetCommands.Subnegotation)
+                        {
+                        }
+                        // delete a character
+                        else if (command == TelnetCommands.EraseCharacter)
+                        {
+                        }
+                        // delete the line
+                        else if (command == TelnetCommands.EraseLine)
+                        {
+                        }
+                        else
+                        {
+                            // regular negotiation
+                            TelnetOptions option = data[++i].ToTelnetOption();
+
+                            Array.Resize<byte>(ref response, response.Length + 3);
+                            response[response.Length - 3] = TelnetCommands.IAC.Translate();
+
+                            // check to see if that option is supported
+                            if (_flags.Contains(option.ToFlag()))
+                            {
+                                if (command == TelnetCommands.Will || command == TelnetCommands.Do)
+                                    response[response.Length - 2] = TelnetCommands.Will.Translate();
+                                else
+                                    response[response.Length - 2] = TelnetCommands.Wont.Translate();
+
+                                if (option == TelnetOptions.NAWS && (command == TelnetCommands.Will))
+                                    _nawsEnabled = true;
+                            }
+                            else // tell the server not to support this
+                            {
+                                if (command == TelnetCommands.Will)
+                                    response[response.Length - 2] = TelnetCommands.Dont.Translate();
+                                else
+                                    response[response.Length - 2] = TelnetCommands.Wont.Translate();
+                            }
+
+                            response[response.Length - 1] = option.Translate();
+
+                            _negotiated |= option.ToFlag();
+                        }
+                        continue;
+                    }
+
+                    // append the data to the segment
+                    char c = (char)data[i];
+                    if (c == '\b')
+                    {
+                        if (segment.Length > 0)
+                            segment.Remove(segment.Length - 1, 1);
+                    }
+                    else
+                        segment.Append(c);
                 }
-            }
 
-            return sb.ToString();
+                // check for server negotiation
+                if (response.Length > 0)
+                {
+                    // add any additional flags that haven't been negotiated
+                    foreach (TelnetOptionFlags option in _flags.ParseOptions())
+                    {
+                        // this has already been negotiated
+                        if (_negotiated.Contains(option)) continue;
+
+                        // request the ones that we are comfortable with so far
+                        switch (option)
+                        {
+                            case TelnetOptionFlags.SupressGoAhead: goto case TelnetOptionFlags.NAWS;
+                            case TelnetOptionFlags.Echo: goto case TelnetOptionFlags.NAWS;
+                            case TelnetOptionFlags.NAWS:
+                                Array.Resize<byte>(ref response, response.Length + 3);
+
+                                response[response.Length - 3] = TelnetCommands.IAC.Translate();
+                                response[response.Length - 2] = TelnetCommands.Do.Translate();
+                                response[response.Length - 1] = option.Translate().Translate();
+
+                                break;
+                        }
+
+                        _negotiated |= option;
+                    }
+
+                    // create the socket event args
+                    SocketAsyncEventArgs args = new SocketAsyncEventArgs();
+                    args.UserToken = _socket;
+                    args.RemoteEndPoint = _address;
+                    args.Completed += new EventHandler<SocketAsyncEventArgs>(AsyncCompletedHandler);
+
+                    // put the response in the buffer
+                    args.SetBuffer(response, 0, response.Length);
+
+                    // send the response to the server
+                    _socket.SendAsync(args);
+                }
+
+                // notify any listeners
+                if (MessageRecieved != null)
+                {
+                    segments.Add(new DisplayText() { Text = segment.ToString(), TextColor = currentColor });
+                    MessageRecieved(this, new MessageRecievedEventArgs()
+                    {
+                        Segments = segments.ToArray()
+                    });
+                }
+
+                // end byte processing
+            } while (_socket.Connected);
         }
-
-        #endregion
-
-        #region Telnet Negotation
-
-        byte[] ProcessCommand(byte[] source, int offset)
-        {
-            byte[] response = new byte[] { (byte)TelnetCommands.IAC, (byte)TelnetCommands.NoOp, (byte)TelnetCommands.NoOp };
-
-            TelnetCommands command = (TelnetCommands)source[offset];
-            TelnetOptions option = (TelnetOptions)source[offset + 1];
-
-            // note that we really only care about SGA at this point
-            switch (command)
-            {
-                case TelnetCommands.Will: // the server is willing to enable this
-                    if (option == TelnetOptions.SupressGoAhead ||
-                        option == TelnetOptions.Echo ||
-                        option == TelnetOptions.TransmitBinary)
-                        response[1] = (byte)TelnetCommands.Do;
-                    else
-                        response[1] = (byte)TelnetCommands.Dont;
-                    break;
-                case TelnetCommands.Wont: // the server refuses to enable this
-                    response[1] = (byte)TelnetCommands.Dont;
-                    break;
-                case TelnetCommands.Do: // the server requests you do this
-                    if (option == TelnetOptions.SupressGoAhead ||
-                        option == TelnetOptions.Echo ||
-                        option == TelnetOptions.TransmitBinary)
-                        response[1] = (byte)TelnetCommands.Will;
-                    else
-                        response[1] = (byte)TelnetCommands.Wont;
-                    break;
-                case TelnetCommands.Dont: // the server doesn't want you to do this
-                    response[1] = (byte)TelnetCommands.Wont;
-                    break;
-                default:
-                    response[1] = (byte)TelnetCommands.Wont;
-                    break; // ignore these cases unless required
-            }
-
-            response[2] = (byte)option;
-
-            return response;
-        }
-
-        #endregion
     }
 }

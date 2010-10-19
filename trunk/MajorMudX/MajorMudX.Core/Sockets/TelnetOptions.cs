@@ -1,4 +1,8 @@
-﻿namespace MajorMudX.Core.Sockets
+﻿using System.Collections.Generic;
+using System;
+using System.Reflection;
+
+namespace MajorMudX.Core.Sockets
 {
     internal enum TelnetOptions : byte
     {
@@ -21,5 +25,58 @@
         ToggleFlowControl = 0x21,
         LienMode = 0x22,
         Authentication = 0x23
+    }
+
+    /// <summary>
+    /// Internal class for translating between public flag enum to byte representation.
+    /// </summary>
+    internal static class TelnetOptionFlagsExtensions
+    {
+        public static TelnetOptions[] GetFlags(this TelnetOptionFlags flag)
+        {
+            List<TelnetOptions> options = new List<TelnetOptions>();
+
+            foreach (TelnetOptionFlags tflag in flag.ParseOptions())
+                options.Add(tflag.Translate());
+
+            return options.ToArray();
+        }
+
+        public static TelnetOptionFlags[] ParseOptions(this TelnetOptionFlags flag)
+        {
+            List<TelnetOptionFlags> flags = new List<TelnetOptionFlags>();
+
+            foreach (FieldInfo fi in typeof(TelnetOptionFlags).GetFields(BindingFlags.Static | BindingFlags.Public))
+            {
+                TelnetOptionFlags option = (TelnetOptionFlags)fi.GetValue(null);
+                if (flag.Contains(option)) flags.Add(option);
+            }
+
+            return flags.ToArray();
+        }
+
+        public static TelnetOptions Translate(this TelnetOptionFlags flag)
+        {
+            string name = Enum.GetName(typeof(TelnetOptionFlags), flag);
+
+            return (TelnetOptions)Enum.Parse(typeof(TelnetOptions), name, true);
+        }
+
+        public static TelnetOptionFlags ToFlag(this TelnetOptions option)
+        {
+            string name = Enum.GetName(typeof(TelnetOptions), option);
+
+            return (TelnetOptionFlags)Enum.Parse(typeof(TelnetOptionFlags), name, true);
+        }
+
+        public static bool Contains(this TelnetOptionFlags current, TelnetOptionFlags flag)
+        {
+            return (current & flag) > 0;
+        }
+
+        public static byte Translate(this TelnetOptions option)
+        {
+            return (byte)option;
+        }
     }
 }

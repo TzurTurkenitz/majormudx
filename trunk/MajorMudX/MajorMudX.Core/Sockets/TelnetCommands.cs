@@ -1,4 +1,5 @@
-﻿namespace MajorMudX.Core.Sockets
+﻿using System.Reflection;
+namespace MajorMudX.Core.Sockets
 {
     internal enum TelnetCommands : byte
     {
@@ -18,5 +19,46 @@
         Do = 0xFD,
         Dont = 0xFE,
         IAC = 0xFF
+    }
+
+    internal static class TelnetCommandsExtensions
+    {
+        public static bool IsTelnetCommand(this byte b)
+        {
+            foreach (FieldInfo fi in typeof(TelnetCommands).GetFields(BindingFlags.Static | BindingFlags.Public))
+            {
+                TelnetCommands command = (TelnetCommands)fi.GetValue(null);
+                if ((byte)command == b) return true;
+            }
+
+            return false;
+        }
+
+        public static TelnetCommands ToTelnetCommand(this byte b)
+        {
+            foreach (FieldInfo fi in typeof(TelnetCommands).GetFields(BindingFlags.Static | BindingFlags.Public))
+            {
+                TelnetCommands command = (TelnetCommands)fi.GetValue(null);
+                if ((byte)command == b) return command;
+            }
+
+            return TelnetCommands.IAC;
+        }
+
+        public static TelnetOptions ToTelnetOption(this byte b)
+        {
+            foreach (FieldInfo fi in typeof(TelnetOptions).GetFields(BindingFlags.Static | BindingFlags.Public))
+            {
+                TelnetOptions option = (TelnetOptions)fi.GetValue(null);
+                if ((byte)option == b) return option;
+            }
+
+            return TelnetOptions.SupressGoAhead;
+        }
+
+        public static byte Translate(this TelnetCommands command)
+        {
+            return (byte)command;
+        }
     }
 }

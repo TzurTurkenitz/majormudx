@@ -20,7 +20,7 @@ namespace MajorMudX.UI.Infrastructure
         ISessionCredentials _credentials;
         IBBSInfo _bbs;
 
-        TelnetSocket _socket;
+        OldTelnetSocket _socket;
 
         int _loginIdx;
         string _overflow;
@@ -32,8 +32,8 @@ namespace MajorMudX.UI.Infrastructure
             _credentials = credentials;
             _bbs = bbs;
 
-            _socket = new TelnetSocket(bbs.Address);
-            _socket.MessageRecieved += new TelnetSocket.IncomingMessageHandler(ProcessSocketMessage);
+            _socket = new OldTelnetSocket(bbs.Address);
+            _socket.MessageRecieved += new OldTelnetSocket.IncomingMessageHandler(ProcessSocketMessage);
 
             CurrentState = SessionState.NOT_STARTED;
         }
