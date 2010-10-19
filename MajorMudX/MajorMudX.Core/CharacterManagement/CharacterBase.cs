@@ -15,7 +15,7 @@ namespace MajorMudX.Core.CharacterManagement
 {
     public abstract class CharacterBase : ICharacter
     {
-        protected TelnetSocket _socket;
+        protected OldTelnetSocket _socket;
         protected ServerDetails _server;
 
         public virtual void Connect()

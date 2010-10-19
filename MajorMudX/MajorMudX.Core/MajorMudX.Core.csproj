@@ -58,6 +58,9 @@
     <Compile Include="CharacterManagement\CharacterBase.cs" />
     <Compile Include="CharacterManagement\ICharacter.cs" />
     <Compile Include="Configuration\TextFormattingConfiguration.cs" />
+    <Compile Include="Controls\TelnetConsole.xaml.cs">
+      <DependentUpon>TelnetConsole.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Infrastructure\IBBSInfo.cs" />
     <Compile Include="Infrastructure\IRequestResponse.cs" />
     <Compile Include="Infrastructure\ISessionController.cs" />
@@ -70,10 +73,14 @@
     <Compile Include="Injection\ObjectResolver.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ServerManagement\ServerDetails.cs" />
+    <Compile Include="Sockets\AnsiProcessor.cs" />
+    <Compile Include="Sockets\MessageRecievedEventArgs.cs" />
+    <Compile Include="Sockets\TelnetNegotiationEventArgs.cs" />
+    <Compile Include="Sockets\TelnetOptionFlags.cs" />
+    <Compile Include="Sockets\TelnetSocket.cs" />
     <Compile Include="Utilities\Text\ANSIFormatting.cs" />
     <Compile Include="Sockets\TelnetCommands.cs" />
     <Compile Include="Sockets\TelnetOptions.cs" />
-    <Compile Include="Sockets\TelnetSocket.cs" />
     <Compile Include="UI\CharacterHostAttribute.cs" />
     <Compile Include="UI\Text\DisplayText.cs" />
     <Compile Include="UI\Text\IFormattedTextSegment.cs" />
@@ -81,7 +88,12 @@
     <Compile Include="Utilities\Text\TextDecoratorBase.cs" />
     <Compile Include="Utilities\XapManagement\XapLoader.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Page Include="Controls\TelnetConsole.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+  </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>
     <VisualStudio>
