@@ -27,7 +27,7 @@ namespace MajorMudX.Core.Sockets
             _address = new DnsEndPoint(address, 23);
             _buffer = new Queue<byte[]>();
             _socket = new Socket(AddressFamily.InterNetwork, SocketType.Stream, ProtocolType.Tcp);
-            _flags = TelnetOptionFlags.Echo | TelnetOptionFlags.SupressGoAhead;
+            _flags = TelnetOptionFlags.Echo | TelnetOptionFlags.SupressGoAhead | TelnetOptionFlags.NAWS;
             _negotiated = TelnetOptionFlags.None;
             _writeLock = new AutoResetEvent(false);
         }
