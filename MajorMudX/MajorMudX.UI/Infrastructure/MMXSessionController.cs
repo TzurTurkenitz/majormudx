@@ -20,7 +20,6 @@ namespace MajorMudX.UI.Infrastructure
         ISessionCredentials _credentials;
         IBBSInfo _bbs;
 
-        OldTelnetSocket _socket;
 
         int _loginIdx;
         string _overflow;
@@ -32,16 +31,12 @@ namespace MajorMudX.UI.Infrastructure
             _credentials = credentials;
             _bbs = bbs;
 
-            _socket = new OldTelnetSocket(bbs.Address);
-            _socket.MessageRecieved += new OldTelnetSocket.IncomingMessageHandler(ProcessSocketMessage);
 
             CurrentState = SessionState.NOT_STARTED;
         }
 
         public void Write(string message)
         {
-            if (_socket.IsConnected)
-                _socket.Write(message);
         }
 
         void ProcessSocketMessage(string message)
@@ -62,13 +57,6 @@ namespace MajorMudX.UI.Infrastructure
 
         public void Login()
         {
-            if (_socket.IsConnected) throw new InvalidOperationException("Login Sequence already executed!");
-
-            CurrentState = _bbs.PreLoginSequence.Length > 0 ? SessionState.PRE_LOGIN : SessionState.LOGIN;
-            _loginIdx = 0;
-            _overflow = string.Empty;
-            _socket.Connect();
-            _loginTimer = new Timer(new TimerCallback(TimerElapsed), null, 100, -1);
         }
 
         void WriteSessionMessage(string message)
@@ -79,24 +67,6 @@ namespace MajorMudX.UI.Infrastructure
 
         void TimerElapsed(object state)
         {
-            _loginTimer = null;
-            IRequestResponse resp = _bbs.LoginSequence[_loginIdx];
-            if (_overflow.Contains(resp.Request))
-            {
-                lock (_overflow)
-                {
-                    _overflow = string.Empty;
-                }
-
-                CurrentState = _loginIdx++ == _bbs.LoginSequence.Length - 1 ? SessionState.CONNECTED : SessionState.LOGIN;
-
-                _socket.Write(resp.Response);
-
-                if (CurrentState == SessionState.CONNECTED) return;
-            }
-            else _socket.Write("\n");
-
-            _loginTimer = new Timer(new TimerCallback(TimerElapsed), null, 100, -1);
         }
 
         public SessionState CurrentState { get; private set; }
