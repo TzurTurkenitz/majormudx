@@ -21,7 +21,7 @@
     <Grid x:Name="LayoutRoot" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" GotFocus="LayoutRoot_GotFocus">
         <TextBox Visibility="Visible" Height="0" Width="0" Background="Transparent" x:Name="tbxCaptureText" KeyUp="tbxCaptureText_KeyDown"/>
         <ScrollViewer x:Name="svMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Style="{StaticResource MMXScrollViewerStyle}">
-            <TextBlock x:Name="tblkMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap">
+            <TextBlock x:Name="tblkMainContent" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" TextWrapping="Wrap" FontFamily="Courier New">
             </TextBlock>
         </ScrollViewer>
     </Grid>

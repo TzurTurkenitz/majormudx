@@ -15,15 +15,10 @@ namespace MajorMudX.Core.CharacterManagement
 {
     public abstract class CharacterBase : ICharacter
     {
-        protected OldTelnetSocket _socket;
         protected ServerDetails _server;
 
         public virtual void Connect()
         {
-            if (_socket != null && !_socket.IsConnected)
-            {
-                _socket.Connect();
-            }
         }
     }
 }
