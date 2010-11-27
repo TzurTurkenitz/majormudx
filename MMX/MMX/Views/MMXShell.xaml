@@ -1,0 +1,62 @@
+﻿<UserControl x:Class="MMX.MMXShell"
+	xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+	xmlns:vmAPI="clr-namespace:MMX.Core.API.ViewModels;assembly=MMX.Core"
+	xmlns:infraCmd="clr-namespace:MMX.Core.API.Infrastructure.Command;assembly=MMX.Core"
+	mc:Ignorable="d"
+	d:DesignHeight="300" d:DesignWidth="400">
+
+	<UserControl.Resources>
+		<vmAPI:ViewModelLocator x:Key="vmLocator"/>
+		<infraCmd:EventToCommandConverter x:Key="eventConverter"/>
+		<Style BasedOn="{StaticResource TitleButtonStyle}" TargetType="Button" x:Name="ShellTitleButton">
+			<Setter Property="Foreground" Value="Black"/>
+			<Setter Property="FontWeight" Value="ExtraBold"/>
+			<Setter Property="Margin" Value="1"/>
+		</Style>
+	</UserControl.Resources>
+	
+	<UserControl.DataContext>
+		<Binding Source="{StaticResource vmLocator}" Converter="{StaticResource vmLocator}" ConverterParameter="Shell"/>
+	</UserControl.DataContext>
+
+	<Grid x:Name="LayoutRoot" Background="Black">
+		<Grid.RowDefinitions>
+			<RowDefinition Height="27"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition Height="25"/>
+			<RowDefinition/>
+			<RowDefinition Height="25"/>
+		</Grid.RowDefinitions>
+
+		<!-- Title Window -->
+		<StackPanel Background="{StaticResource GlassBrush}" 
+					HorizontalAlignment="Stretch" 
+					Orientation="Horizontal" 
+					FlowDirection="RightToLeft"
+					infraCmd:EventBinder.Event="{Binding DragMoveCommand, Mode=TwoWay, Converter={StaticResource eventConverter}, ConverterParameter='MouseLeftButtonDown'}"
+					>
+			<Button x:Name="btnClose" Style="{StaticResource ShellTitleButton}" Content="X" Command="{Binding Path=CloseCommand, Mode=TwoWay}"/>
+			<Button x:Name="btnMaxRestore" Style="{StaticResource ShellTitleButton}" Content="[]" Command="{Binding Path=MaxRestoreCommand, Mode=TwoWay}"/>
+			<Button x:Name="btnMinimize" Style="{StaticResource ShellTitleButton}" Content="_" Command="{Binding Path=MinimizeCommand, Mode=TwoWay}"/>
+		</StackPanel>
+		<!-- End Title Window -->
+		
+		<!-- File Menu -->
+		<!-- End File Menu -->
+		
+		<!-- Tool Menu -->
+		<!-- End Tool Menu -->
+		
+		<!-- Main Content -->
+		<!-- End Main Content -->
+		
+		<!-- Footer -->
+		<StackPanel Grid.Row="4"  Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" Background="{StaticResource GlassBrush}">
+			<Button Style="{StaticResource ShellTitleButton}" Content=":."/>
+		</StackPanel>
+		<!-- End Footer -->
+	</Grid>
+</UserControl>
