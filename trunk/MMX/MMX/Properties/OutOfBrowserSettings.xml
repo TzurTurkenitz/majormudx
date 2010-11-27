@@ -1,0 +1,15 @@
+<OutOfBrowserSettings ShortName="Major Mud X" EnableGPUAcceleration="True" ShowInstallMenuItem="True">
+  <OutOfBrowserSettings.Blurb>The latest and greatest MajorMud scripting engine.</OutOfBrowserSettings.Blurb>
+  <OutOfBrowserSettings.WindowSettings>
+    <WindowSettings Title="Major Mud X" WindowStyle="BorderlessRoundCornersWindow" />
+  </OutOfBrowserSettings.WindowSettings>
+  <OutOfBrowserSettings.SecuritySettings>
+    <SecuritySettings ElevatedPermissions="Required" />
+  </OutOfBrowserSettings.SecuritySettings>
+  <OutOfBrowserSettings.Icons>
+    <Icon Size="16,16">Images/mmx16.png</Icon>
+    <Icon Size="32,32">Images/mmx32.png</Icon>
+    <Icon Size="48,48">Images/mmx48.png</Icon>
+    <Icon Size="128,128">Images/mmx128.png</Icon>
+  </OutOfBrowserSettings.Icons>
+</OutOfBrowserSettings>

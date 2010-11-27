@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMX", "MMX\MMX.csproj", "{79A32608-853C-4AF0-8A2B-E82E0E56546F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMX.Web", "MMX.Web\MMX.Web.csproj", "{5CD4C792-352F-483E-A58A-7A7010F05D09}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMX.Core", "MMX.Core\MMX.Core.csproj", "{DDB99DD8-B7B9-4CD7-84F6-584B1A6EA375}"
+EndProject
+Global
+	GlobalSection(SubversionScc) = preSolution
+		Svn-Managed = True
+		Manager = AnkhSVN - Subversion Support for Visual Studio
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{79A32608-853C-4AF0-8A2B-E82E0E56546F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79A32608-853C-4AF0-8A2B-E82E0E56546F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79A32608-853C-4AF0-8A2B-E82E0E56546F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79A32608-853C-4AF0-8A2B-E82E0E56546F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CD4C792-352F-483E-A58A-7A7010F05D09}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CD4C792-352F-483E-A58A-7A7010F05D09}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CD4C792-352F-483E-A58A-7A7010F05D09}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CD4C792-352F-483E-A58A-7A7010F05D09}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DDB99DD8-B7B9-4CD7-84F6-584B1A6EA375}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DDB99DD8-B7B9-4CD7-84F6-584B1A6EA375}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DDB99DD8-B7B9-4CD7-84F6-584B1A6EA375}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DDB99DD8-B7B9-4CD7-84F6-584B1A6EA375}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
