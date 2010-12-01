@@ -4,7 +4,6 @@
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vmAPI="clr-namespace:MMX.Core.API.ViewModels;assembly=MMX.Core"
-	xmlns:infraCmd="clr-namespace:MMX.Core.API.Infrastructure.Command;assembly=MMX.Core"
     xmlns:BindingAPI="clr-namespace:MMX.Core.API.Infrastructure.Binding;assembly=MMX.Core"
 	mc:Ignorable="d"
 	d:DesignHeight="300" d:DesignWidth="400">
