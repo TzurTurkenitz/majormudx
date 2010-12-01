@@ -73,9 +73,25 @@ namespace MMX.ViewModels
             DragResizeCommand = new DelegateCommand(
                 new Action<object>((o) => { Application.Current.MainWindow.DragResize(WindowResizeEdge.BottomRight); }),
                 new Func<object, bool>((o) => { return true; }));
+
+            ResizeEnterMouseHoverCommand = new DelegateCommand(
+                new Action<object>((o) =>
+                {
+                    MouseEventArgs e = o as MouseEventArgs;
+                    if (e != null)
+                    {
+                        FrameworkElement ctl = e.OriginalSource as FrameworkElement;
+                        if (ctl != null)
+                            ctl.Cursor = Application.Current.MainWindow.WindowState != WindowState.Maximized ? 
+                                Cursors.SizeNWSE : Cursors.Arrow;
+                    }
+                }),
+                new Func<object, bool>((o) => { return true; }));
         }
 
         public ICommand DragResizeCommand { get; set; }
+
+        public ICommand ResizeEnterMouseHoverCommand { get; set; }
 
         #endregion
     }
