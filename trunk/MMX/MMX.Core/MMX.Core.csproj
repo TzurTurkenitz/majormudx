@@ -55,10 +55,10 @@
     <Reference Include="System.Windows.Browser" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="API\Infrastructure\Binding\BindingUtil.cs" />
+    <Compile Include="API\Infrastructure\Binding\CommandBinding.cs" />
+    <Compile Include="API\Infrastructure\Binding\EventBinding.cs" />
     <Compile Include="API\Infrastructure\Command\DelegateCommand.cs" />
-    <Compile Include="API\Infrastructure\Command\EventBinder.cs" />
-    <Compile Include="API\Infrastructure\Command\EventBinding.cs" />
-    <Compile Include="API\Infrastructure\Command\EventToCommandConverter.cs" />
     <Compile Include="API\ViewModels\ViewModelBase.cs" />
     <Compile Include="API\ViewModels\ViewModelLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
