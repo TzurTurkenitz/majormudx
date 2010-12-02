@@ -13,6 +13,7 @@ using System.Reflection;
 namespace MMX.Core.API.Infrastructure.Binding
 {
     using Ex = System.Linq.Expressions.Expression;
+    using WinBinding = System.Windows.Data.Binding;
     public class BindingUtil
     {
         public static DependencyProperty EventBindingProperty = DependencyProperty.Register(
@@ -25,22 +26,17 @@ namespace MMX.Core.API.Infrastructure.Binding
 
         public static void SetEventBinding(DependencyObject owner, EventBinding binding)
         {
-            DependencyProperty prop = DependencyProperty.RegisterAttached("Ctx" + owner.GetValue(FrameworkElement.NameProperty) as string,
-                typeof(object), typeof(BindingUtil), new PropertyMetadata(new PropertyChangedCallback(ContextChanged)));
-            System.Windows.Data.Binding ctxBinding = new System.Windows.Data.Binding("DataContext");
-            ctxBinding.Source = owner;
-            ((FrameworkElement)owner).SetBinding(prop, ctxBinding);
-            owner.SetValue(EventBindingProperty, binding);
-        }
-
-        public static void ContextChanged(DependencyObject owner, DependencyPropertyChangedEventArgs e)
-        {
-            EventBinding binding = owner.GetValue(EventBindingProperty) as EventBinding;
-            if (binding != null)
+            FrameworkElement elem = owner as FrameworkElement;
+            if (elem != null)
             {
-                binding.DataContext = e.NewValue;
-                UpdateBinding(owner, binding);
+                elem.Loaded += new RoutedEventHandler((o, e) =>
+                {
+                    binding.DataContext = ((FrameworkElement)o).DataContext;
+                    UpdateBinding(o as DependencyObject, binding);
+                });
             }
+
+            owner.SetValue(EventBindingProperty, binding);
         }
 
         public static void OnMultiBindingChanged(DependencyObject owner, DependencyPropertyChangedEventArgs e)
@@ -82,7 +78,7 @@ namespace MMX.Core.API.Infrastructure.Binding
 
                         if (mthd != null)
                         {
-                            var param = Ex.Parameter(typeof(string));
+                            var param = Ex.Parameter(typeof(EventArgs));
                             foreach (var p in mthd.GetParameters())
                             {
                                 if (p.ParameterType != typeof(object))

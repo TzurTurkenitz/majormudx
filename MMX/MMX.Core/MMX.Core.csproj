@@ -59,12 +59,15 @@
     <Compile Include="API\Infrastructure\Binding\CommandBinding.cs" />
     <Compile Include="API\Infrastructure\Binding\EventBinding.cs" />
     <Compile Include="API\Infrastructure\Command\DelegateCommand.cs" />
+    <Compile Include="API\Infrastructure\Services\ServiceLocator.cs" />
+    <Compile Include="API\UI\ContentLocator.cs" />
+    <Compile Include="API\UI\IMainContentControl.cs" />
     <Compile Include="API\ViewModels\ViewModelBase.cs" />
     <Compile Include="API\ViewModels\ViewModelLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\Infrastructure\Services\" />
+    <Folder Include="API\Infrastructure\Initialization\" />
     <Folder Include="Communication\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
