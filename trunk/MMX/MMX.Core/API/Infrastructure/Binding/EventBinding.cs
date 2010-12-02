@@ -16,7 +16,7 @@ namespace MMX.Core.API.Infrastructure.Binding
     using System.Windows.Markup;
 
     [ContentProperty("Bindings")]
-    public class EventBinding : Panel
+    public class EventBinding : FrameworkElement
     {
         public EventBinding()
         {

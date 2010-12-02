@@ -5,11 +5,13 @@
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
 	xmlns:vmAPI="clr-namespace:MMX.Core.API.ViewModels;assembly=MMX.Core"
     xmlns:BindingAPI="clr-namespace:MMX.Core.API.Infrastructure.Binding;assembly=MMX.Core"
+    xmlns:UIAPI="clr-namespace:MMX.Core.API.UI;assembly=MMX.Core"
 	mc:Ignorable="d"
 	d:DesignHeight="300" d:DesignWidth="400">
 
     <UserControl.Resources>
         <vmAPI:ViewModelLocator x:Key="vmLocator"/>
+        <UIAPI:ContentLocator x:Key="contentLocator"/>
         <Style BasedOn="{StaticResource TitleButtonStyle}" TargetType="Button" x:Name="ShellTitleButton">
             <Setter Property="Foreground" Value="Black"/>
             <Setter Property="FontWeight" Value="ExtraBold"/>
@@ -21,7 +23,7 @@
         <Binding Source="{StaticResource vmLocator}" Converter="{StaticResource vmLocator}" ConverterParameter="Shell"/>
     </UserControl.DataContext>
 
-    <Grid x:Name="LayoutRoot" Background="Black">
+    <Grid x:Name="LayoutRoot" Background="Black" DataContext="{Binding}">
         <Grid.RowDefinitions>
             <RowDefinition Height="27"/>
             <RowDefinition Height="25"/>
@@ -35,7 +37,6 @@
 					HorizontalAlignment="Stretch" 
 					Orientation="Horizontal" 
 					FlowDirection="RightToLeft"
-                    DataContext="{Binding}"
 					>
 
             <BindingAPI:BindingUtil.EventBinding>
@@ -50,17 +51,31 @@
         <!-- End Title Window -->
 
         <!-- File Menu -->
+        <Border HorizontalAlignment="Stretch" Grid.Row="1" BorderThickness="1" BorderBrush="{StaticResource GlassBorderBrush}">
+            <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" 
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent">
+            </StackPanel>
+        </Border>
         <!-- End File Menu -->
 
         <!-- Tool Menu -->
+        <Border HorizontalAlignment="Stretch" Grid.Row="2" BorderThickness="1" BorderBrush="{StaticResource GlassBorderBrush}">
+            <StackPanel Orientation="Horizontal" FlowDirection="LeftToRight" 
+                    HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+                    Background="Transparent">
+            </StackPanel>
+        </Border>
         <!-- End Tool Menu -->
 
         <!-- Main Content -->
+        <ContentControl Grid.Row="3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
+                        Content="{Binding Source={StaticResource contentLocator}, Converter={StaticResource contentLocator}, ConverterParameter='MainUI'}"/>
         <!-- End Main Content -->
 
         <!-- Footer -->
         <StackPanel Grid.Row="4"  Orientation="Horizontal" FlowDirection="RightToLeft" HorizontalAlignment="Stretch" Background="{StaticResource GlassBrush}">
-            <TextBlock Width="5" DataContext="{Binding}">
+            <TextBlock Width="5">
                 <BindingAPI:BindingUtil.EventBinding>
                     <BindingAPI:EventBinding>
                         <BindingAPI:CommandBinding TargetCommand="ResizeEnterMouseHoverCommand" EventName="MouseEnter"/>

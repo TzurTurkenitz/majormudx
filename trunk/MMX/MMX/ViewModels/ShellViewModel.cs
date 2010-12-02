@@ -10,6 +10,8 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MMX.Core.API.ViewModels;
 using MMX.Core.API.Infrastructure.Command;
+using MMX.Core.API.Infrastructure.Services;
+using MMX.Core.API.UI;
 
 namespace MMX.ViewModels
 {
@@ -82,7 +84,7 @@ namespace MMX.ViewModels
                     {
                         FrameworkElement ctl = e.OriginalSource as FrameworkElement;
                         if (ctl != null)
-                            ctl.Cursor = Application.Current.MainWindow.WindowState != WindowState.Maximized ? 
+                            ctl.Cursor = Application.Current.MainWindow.WindowState != WindowState.Maximized ?
                                 Cursors.SizeNWSE : Cursors.Arrow;
                     }
                 }),

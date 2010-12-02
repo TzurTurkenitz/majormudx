@@ -11,6 +11,9 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MMX.Core.API.ViewModels;
 using MMX.ViewModels;
+using MMX.Views;
+using MMX.Core.API.Infrastructure.Services;
+using MMX.Core.API.UI;
 
 namespace MMX
 {
@@ -31,6 +34,10 @@ namespace MMX
             if (Application.Current.HasElevatedPermissions && Application.Current.IsRunningOutOfBrowser)
             {
                 ViewModelLocator.Register("Shell", new ShellViewModel());
+
+                ServiceLocator locator = new ServiceLocator();
+                locator.Register<IMainContentControl>(new MainShellContent());
+
                 // use the out of browser app
                 this.RootVisual = new MMXShell();
             }

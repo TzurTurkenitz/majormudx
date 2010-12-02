@@ -78,6 +78,9 @@
     <Compile Include="ViewModels\IFooterViewModel.cs" />
     <Compile Include="ViewModels\ITitleViewModel.cs" />
     <Compile Include="ViewModels\ShellViewModel.cs" />
+    <Compile Include="Views\MainShellContent.xaml.cs">
+      <DependentUpon>MainShellContent.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Views\MMXShell.xaml.cs">
       <DependentUpon>MMXShell.xaml</DependentUpon>
     </Compile>
@@ -117,6 +120,10 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Resource>
+    <Page Include="Views\MainShellContent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\MMXShell.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
