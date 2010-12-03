@@ -14,13 +14,17 @@ using MMX.ViewModels;
 using MMX.Views;
 using MMX.Core.API.Infrastructure.Services;
 using MMX.Core.API.UI;
+using System.Threading;
+using System.Windows.Threading;
+using MMX.Core.API.Infrastructure.Control;
 
 namespace MMX
 {
-    public partial class App : Application
+    public partial class MMXApplication : Application
     {
+        public IController ShellController { get; private set; }
 
-        public App()
+        public MMXApplication()
         {
             this.Startup += this.Application_Startup;
             this.Exit += this.Application_Exit;
@@ -33,10 +37,10 @@ namespace MMX
         {
             if (Application.Current.HasElevatedPermissions && Application.Current.IsRunningOutOfBrowser)
             {
-                ViewModelLocator.Register("Shell", new ShellViewModel());
+                ShellController = new ControllerBase(null);
+                ShellController.Services.Add<IMainContentControl>(new MainShellContent());
 
-                ServiceLocator locator = new ServiceLocator();
-                locator.Register<IMainContentControl>(new MainShellContent());
+                ViewModelLocator.Register("Shell", new ShellViewModel() { Controller = new ControllerBase(ShellController) });
 
                 // use the out of browser app
                 this.RootVisual = new MMXShell();

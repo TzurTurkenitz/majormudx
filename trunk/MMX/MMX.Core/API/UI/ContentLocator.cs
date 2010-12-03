@@ -10,6 +10,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.Windows.Data;
 using MMX.Core.API.Infrastructure.Services;
+using MMX.Core.API.Infrastructure.Control;
 
 namespace MMX.Core.API.UI
 {
@@ -17,8 +18,13 @@ namespace MMX.Core.API.UI
     {
         public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
         {
-            ServiceLocator locator = new ServiceLocator();
-            IMainContentControl ctl = locator.Get<IMainContentControl>();
+            object ctl = null;
+
+            IController cntl = value as IController;
+            if (cntl != null)
+            {
+                ctl = cntl.Services.Get<IMainContentControl>();
+            }
 
             return ctl;
         }

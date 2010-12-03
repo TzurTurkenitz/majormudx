@@ -8,12 +8,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MMX.Core.API.Infrastructure.Services;
 
-namespace MMX.Core.API.UI
+namespace MMX.Core.API.Infrastructure.Services
 {
-    [Service]
-    public interface IMainContentControl
+    [AttributeUsage(AttributeTargets.Interface)]
+    public class ServiceAttribute : Attribute
     {
 
     }

@@ -59,7 +59,15 @@
     <Compile Include="API\Infrastructure\Binding\CommandBinding.cs" />
     <Compile Include="API\Infrastructure\Binding\EventBinding.cs" />
     <Compile Include="API\Infrastructure\Command\DelegateCommand.cs" />
+    <Compile Include="API\Infrastructure\Control\ControllerBase.cs" />
+    <Compile Include="API\Infrastructure\Control\ControllerCache.cs" />
+    <Compile Include="API\Infrastructure\Control\IController.cs" />
+    <Compile Include="API\Infrastructure\Control\ISessionController.cs" />
+    <Compile Include="API\Infrastructure\Initialization\IBootStrapperService.cs" />
+    <Compile Include="API\Infrastructure\Services\ServiceAttribute.cs" />
+    <Compile Include="API\Infrastructure\Services\ServiceCache.cs" />
     <Compile Include="API\Infrastructure\Services\ServiceLocator.cs" />
+    <Compile Include="API\Infrastructure\Views\IView.cs" />
     <Compile Include="API\UI\ContentLocator.cs" />
     <Compile Include="API\UI\IMainContentControl.cs" />
     <Compile Include="API\ViewModels\ViewModelBase.cs" />
@@ -67,7 +75,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\Infrastructure\Initialization\" />
+    <Folder Include="API\Infrastructure\Class Diagrams\" />
+    <Folder Include="API\Infrastructure\Configuration\" />
+    <Folder Include="API\Infrastructure\Factories\" />
     <Folder Include="Communication\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />

@@ -8,12 +8,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MMX.Core.API.Infrastructure.Services;
 
-namespace MMX.Core.API.UI
+namespace MMX.Core.API.Infrastructure.Control
 {
-    [Service]
-    public interface IMainContentControl
+    public interface ISessionController : IController
     {
 
     }

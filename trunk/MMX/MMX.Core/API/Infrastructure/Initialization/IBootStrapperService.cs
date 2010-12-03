@@ -10,10 +10,10 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MMX.Core.API.Infrastructure.Services;
 
-namespace MMX.Core.API.UI
+namespace MMX.Core.API.Infrastructure.Initialization
 {
     [Service]
-    public interface IMainContentControl
+    public interface IBootStrapperService
     {
 
     }
