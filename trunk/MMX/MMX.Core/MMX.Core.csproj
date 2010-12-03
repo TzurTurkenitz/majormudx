@@ -69,10 +69,8 @@
     <Compile Include="API\Infrastructure\Services\ServiceCache.cs" />
     <Compile Include="API\Infrastructure\Services\ServiceLocator.cs" />
     <Compile Include="API\Infrastructure\Views\ViewCache.cs" />
-    <Compile Include="API\UI\ContentLocator.cs" />
-    <Compile Include="API\UI\IMainContentControl.cs" />
-    <Compile Include="API\ViewModels\ViewModelBase.cs" />
-    <Compile Include="API\ViewModels\ViewModelLocator.cs" />
+    <Compile Include="API\Infrastructure\ViewModels\ViewModelBase.cs" />
+    <Compile Include="API\Infrastructure\ViewModels\ViewModelLocator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

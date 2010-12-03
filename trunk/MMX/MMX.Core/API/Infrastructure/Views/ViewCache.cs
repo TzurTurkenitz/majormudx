@@ -11,7 +11,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MMX.Core.API.Infrastructure.Control;
 using MMX.Core.API.Infrastructure.Factories;
-using MMX.Core.API.ViewModels;
+using MMX.Core.API.Infrastructure.ViewModels;
 
 namespace MMX.Core.API.Infrastructure.Views
 {

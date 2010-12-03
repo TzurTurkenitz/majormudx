@@ -8,10 +8,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MMX.Core.API.ViewModels;
+using MMX.Core.API.Infrastructure.ViewModels;
 using MMX.Core.API.Infrastructure.Command;
 using MMX.Core.API.Infrastructure.Services;
-using MMX.Core.API.UI;
 
 namespace MMX.ViewModels
 {

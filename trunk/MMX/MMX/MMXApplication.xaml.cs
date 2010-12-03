@@ -1,8 +1,7 @@
 ﻿using System;
 using System.Windows;
 using MMX.Core.API.Infrastructure.Control;
-using MMX.Core.API.UI;
-using MMX.Core.API.ViewModels;
+using MMX.Core.API.Infrastructure.ViewModels;
 using MMX.ViewModels;
 using MMX.Views;
 

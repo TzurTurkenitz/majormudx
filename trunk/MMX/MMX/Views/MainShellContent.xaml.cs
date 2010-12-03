@@ -9,12 +9,11 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MMX.Core.API.UI;
 using MMX.Core.API.Infrastructure.Views;
 
 namespace MMX.Views
 {
-    public partial class MainShellContent : UserControl, IMainContentControl
+    public partial class MainShellContent : UserControl
     {
         public MainShellContent()
         {
