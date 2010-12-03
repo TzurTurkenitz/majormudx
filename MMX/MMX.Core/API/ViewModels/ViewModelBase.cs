@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using System.ComponentModel;
+using MMX.Core.API.Infrastructure.Control;
 
 namespace MMX.Core.API.ViewModels
 {
@@ -22,6 +23,8 @@ namespace MMX.Core.API.ViewModels
         {
             get { return null; }
         }
+
+        public IController Controller { get; set; }
 
         public string this[string columnName]
         {

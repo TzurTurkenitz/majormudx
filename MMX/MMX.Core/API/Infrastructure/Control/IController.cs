@@ -10,11 +10,12 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MMX.Core.API.Infrastructure.Services;
 
-namespace MMX.Core.API.UI
+namespace MMX.Core.API.Infrastructure.Control
 {
-    [Service]
-    public interface IMainContentControl
+    public interface IController
     {
-
+        ControllerCache Controllers { get; }
+        IController Parent { get; }
+        ServiceCache Services { get; }
     }
 }

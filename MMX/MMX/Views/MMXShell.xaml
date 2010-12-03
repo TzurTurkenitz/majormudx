@@ -7,13 +7,14 @@
     xmlns:BindingAPI="clr-namespace:MMX.Core.API.Infrastructure.Binding;assembly=MMX.Core"
     xmlns:UIAPI="clr-namespace:MMX.Core.API.UI;assembly=MMX.Core"
 	mc:Ignorable="d"
-	d:DesignHeight="300" d:DesignWidth="400">
+	d:DesignHeight="300" d:DesignWidth="400" Foreground="White" x:Name="Shell">
 
     <UserControl.Resources>
         <vmAPI:ViewModelLocator x:Key="vmLocator"/>
         <UIAPI:ContentLocator x:Key="contentLocator"/>
-        <Style BasedOn="{StaticResource TitleButtonStyle}" TargetType="Button" x:Name="ShellTitleButton">
-            <Setter Property="Foreground" Value="Black"/>
+        <Style BasedOn="{StaticResource GlassButton}" TargetType="Button">
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="Foreground" Value="WhiteSmoke"/>
             <Setter Property="FontWeight" Value="ExtraBold"/>
             <Setter Property="Margin" Value="1"/>
         </Style>
@@ -44,9 +45,9 @@
                     <BindingAPI:CommandBinding TargetCommand="DragMoveCommand" EventName="MouseLeftButtonDown"/>
                 </BindingAPI:EventBinding>
             </BindingAPI:BindingUtil.EventBinding>
-            <Button x:Name="btnClose" Style="{StaticResource ShellTitleButton}" Content="X" Command="{Binding Path=CloseCommand, Mode=TwoWay}"/>
-            <Button x:Name="btnMaxRestore" Style="{StaticResource ShellTitleButton}" Content="[]" Command="{Binding Path=MaxRestoreCommand, Mode=TwoWay}"/>
-            <Button x:Name="btnMinimize" Style="{StaticResource ShellTitleButton}" Content="_" Command="{Binding Path=MinimizeCommand, Mode=TwoWay}"/>
+            <Button x:Name="btnClose" Content="X" Width="25" Command="{Binding Path=CloseCommand, Mode=TwoWay}"/>
+            <Button x:Name="btnMaxRestore" Content="[]" Width="25" Command="{Binding Path=MaxRestoreCommand, Mode=TwoWay}"/>
+            <Button x:Name="btnMinimize" Content="_" Width="25" Command="{Binding Path=MinimizeCommand, Mode=TwoWay}"/>
         </StackPanel>
         <!-- End Title Window -->
 
@@ -70,7 +71,7 @@
 
         <!-- Main Content -->
         <ContentControl Grid.Row="3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        Content="{Binding Source={StaticResource contentLocator}, Converter={StaticResource contentLocator}, ConverterParameter='MainUI'}"/>
+                        Content="{Binding Controller, Converter={StaticResource contentLocator}, ConverterParameter='MainUI'}"/>
         <!-- End Main Content -->
 
         <!-- Footer -->
