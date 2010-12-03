@@ -13,7 +13,7 @@ using System.Windows.Data;
 
 namespace MMX.Core.API.ViewModels
 {
-    public class ViewModelLocator : IValueConverter
+    public static class ViewModelLocator
     {
         static Dictionary<string, object> _registerredModels;
 
@@ -29,19 +29,11 @@ namespace MMX.Core.API.ViewModels
             _registerredModels[key] = viewModel;
         }
 
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+        public static object Get(string key)
         {
-            string key = parameter as string;
-            if (!string.IsNullOrEmpty(key) && 
-                _registerredModels.ContainsKey(key))
-                    return _registerredModels[key];
-
+            if (_registerredModels.ContainsKey(key))
+                return _registerredModels[key];
             return null;
-        }
-
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            throw new NotImplementedException();
         }
     }
 }
