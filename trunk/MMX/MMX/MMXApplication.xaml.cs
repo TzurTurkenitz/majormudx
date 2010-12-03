@@ -1,22 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using MMX.Core.API.Infrastructure.Control;
+using MMX.Core.API.UI;
 using MMX.Core.API.ViewModels;
 using MMX.ViewModels;
 using MMX.Views;
-using MMX.Core.API.Infrastructure.Services;
-using MMX.Core.API.UI;
-using System.Threading;
-using System.Windows.Threading;
-using MMX.Core.API.Infrastructure.Control;
 
 namespace MMX
 {
@@ -38,12 +26,11 @@ namespace MMX
             if (Application.Current.HasElevatedPermissions && Application.Current.IsRunningOutOfBrowser)
             {
                 ShellController = new ControllerBase(null);
-                ShellController.Services.Add<IMainContentControl>(new MainShellContent());
-
-                ViewModelLocator.Register("Shell", new ShellViewModel() { Controller = new ControllerBase(ShellController) });
+                ShellController.Views.Create<MainShellContent>("MainShellContent");
+                ViewModelLocator.Register(Constants.ShellViewModel, new ShellViewModel() { Controller = new ControllerBase(ShellController) });
 
                 // use the out of browser app
-                this.RootVisual = new MMXShell();
+                this.RootVisual = ShellController.Views.Create<MMXShell>("MainShell");
             }
             else
             {

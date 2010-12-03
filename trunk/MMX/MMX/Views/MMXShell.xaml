@@ -3,15 +3,13 @@
 	xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
 	xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
 	xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-	xmlns:vmAPI="clr-namespace:MMX.Core.API.ViewModels;assembly=MMX.Core"
     xmlns:BindingAPI="clr-namespace:MMX.Core.API.Infrastructure.Binding;assembly=MMX.Core"
-    xmlns:UIAPI="clr-namespace:MMX.Core.API.UI;assembly=MMX.Core"
+    xmlns:Injection="clr-namespace:MMX.Core.API.Infrastructure.Factories;assembly=MMX.Core"
 	mc:Ignorable="d"
 	d:DesignHeight="300" d:DesignWidth="400" Foreground="White" x:Name="Shell">
 
     <UserControl.Resources>
-        <vmAPI:ViewModelLocator x:Key="vmLocator"/>
-        <UIAPI:ContentLocator x:Key="contentLocator"/>
+        <Injection:ViewModelInjector AttachAsDataContext="True" ViewModelKey="ShellViewModel" x:Key="injector"/>
         <Style BasedOn="{StaticResource GlassButton}" TargetType="Button">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="WhiteSmoke"/>
@@ -19,10 +17,6 @@
             <Setter Property="Margin" Value="1"/>
         </Style>
     </UserControl.Resources>
-
-    <UserControl.DataContext>
-        <Binding Source="{StaticResource vmLocator}" Converter="{StaticResource vmLocator}" ConverterParameter="Shell"/>
-    </UserControl.DataContext>
 
     <Grid x:Name="LayoutRoot" Background="Black" DataContext="{Binding}">
         <Grid.RowDefinitions>
@@ -71,7 +65,7 @@
 
         <!-- Main Content -->
         <ContentControl Grid.Row="3" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"
-                        Content="{Binding Controller, Converter={StaticResource contentLocator}, ConverterParameter='MainUI'}"/>
+                        Content="{Binding Controller.Views[MainShellContent]}"/>
         <!-- End Main Content -->
 
         <!-- Footer -->

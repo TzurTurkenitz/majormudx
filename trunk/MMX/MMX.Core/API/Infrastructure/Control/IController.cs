@@ -9,6 +9,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MMX.Core.API.Infrastructure.Services;
+using MMX.Core.API.Infrastructure.Views;
 
 namespace MMX.Core.API.Infrastructure.Control
 {
@@ -17,5 +18,6 @@ namespace MMX.Core.API.Infrastructure.Control
         ControllerCache Controllers { get; }
         IController Parent { get; }
         ServiceCache Services { get; }
+        ViewCache Views { get; }
     }
 }

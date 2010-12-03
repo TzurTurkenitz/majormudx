@@ -8,12 +8,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
-using MMX.Core.API.Infrastructure.Control;
 
-namespace MMX.Core.API.Infrastructure.Views
+namespace MMX.Core.API.Infrastructure.Factories
 {
-    public interface IView
+    public class ViewModelInjector
     {
-        IController Controller { get; set; }
+        public ViewModelInjector()
+        {
+        }
+
+        public string ViewModelKey { get; set; }
+        public bool AttachAsDataContext { get; set; }
     }
 }
