@@ -14,6 +14,7 @@ using MMX.Core.API.Infrastructure.Services;
 
 namespace MMX.ViewModels
 {
+    [ViewModel(ID = Constants.ShellViewModel, CreationMethod = ViewModelCreationMethod.Instance)]
     public class ShellViewModel : ViewModelBase, ITitleViewModel, IFooterViewModel
     {
         public ShellViewModel()

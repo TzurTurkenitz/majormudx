@@ -47,7 +47,7 @@ namespace MMX.Core.API.Infrastructure.Views
 
             if (injector != null && injector.AttachAsDataContext)
             {
-                instance.DataContext = ViewModelLocator.Get("ShellViewModel");
+                instance.DataContext = ViewModelLocator.Get(injector.ViewModelKey);
             }
 
             _views.Add(id, instance);
