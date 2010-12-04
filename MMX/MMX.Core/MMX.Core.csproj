@@ -67,7 +67,6 @@
     <Compile Include="API\Infrastructure\Initialization\IBootStrapperService.cs" />
     <Compile Include="API\Infrastructure\Services\ServiceAttribute.cs" />
     <Compile Include="API\Infrastructure\Services\ServiceCache.cs" />
-    <Compile Include="API\Infrastructure\Services\ServiceLocator.cs" />
     <Compile Include="API\Infrastructure\ViewModels\ViewModelAttribute.cs" />
     <Compile Include="API\Infrastructure\Views\ViewCache.cs" />
     <Compile Include="API\Infrastructure\ViewModels\ViewModelBase.cs" />
