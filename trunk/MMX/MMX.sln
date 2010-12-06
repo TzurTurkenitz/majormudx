@@ -7,9 +7,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMX.Web", "MMX.Web\MMX.Web.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MMX.Core", "MMX.Core\MMX.Core.csproj", "{DDB99DD8-B7B9-4CD7-84F6-584B1A6EA375}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Documents", "Documents", "{4F273C70-0C48-464F-8A22-33F7FE6429E8}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{F2B04EFD-6E24-418B-A11C-DE05BAD4FDB6}"
 	ProjectSection(SolutionItems) = preProject
-		..\MajorMudX\Documents\Application UML.vsd = ..\MajorMudX\Documents\Application UML.vsd
+		Application UML.vsd = Application UML.vsd
 	EndProjectSection
 EndProject
 Global
