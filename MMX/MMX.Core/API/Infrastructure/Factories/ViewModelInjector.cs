@@ -18,7 +18,6 @@ namespace MMX.Core.API.Infrastructure.Factories
         }
 
         public string ViewModelKey { get; set; }
-        public bool AttachAsDataContext { get; set; }
         public bool CreateNewInstance { get; set; }
     }
 }

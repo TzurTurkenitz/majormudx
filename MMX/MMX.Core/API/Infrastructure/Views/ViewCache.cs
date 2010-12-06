@@ -36,23 +36,23 @@ namespace MMX.Core.API.Infrastructure.Views
 
             T instance = Activator.CreateInstance<T>();
 
-            ViewModelInjector injector = null;
+            ViewModelInjector injector = GetInjector(instance);
 
-            foreach (object key in instance.Resources.Keys)
-                if (instance.Resources[key] is ViewModelInjector)
-                {
-                    injector = instance.Resources[key] as ViewModelInjector;
-                    break;
-                }
-
-            if (injector != null && injector.AttachAsDataContext)
-            {
+            if (injector != null)
                 instance.DataContext = ViewModelLocator.Get(injector.ViewModelKey);
-            }
 
             _views.Add(id, instance);
 
             return instance;
+        }
+
+        private ViewModelInjector GetInjector(UserControl control)
+        {
+            foreach (object key in control.Resources.Keys)
+                if (control.Resources[key] is ViewModelInjector)
+                    return control.Resources[key] as ViewModelInjector;
+
+            return null;
         }
 
         public UserControl this[string key]
