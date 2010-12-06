@@ -9,7 +9,7 @@
 	d:DesignHeight="300" d:DesignWidth="400" Foreground="White" x:Name="Shell">
 
     <UserControl.Resources>
-        <Injection:ViewModelInjector AttachAsDataContext="True" ViewModelKey="ShellViewModel" x:Key="injector"/>
+        <Injection:ViewModelInjector CreateNewInstance="True" ViewModelKey="ShellViewModel" x:Key="injector"/>
         <Style BasedOn="{StaticResource GlassButton}" TargetType="Button">
             <Setter Property="BorderThickness" Value="1"/>
             <Setter Property="Foreground" Value="WhiteSmoke"/>
