@@ -7,6 +7,7 @@ using MMX.ViewModels;
 using MMX.Views;
 using System.Collections.Generic;
 using System.Reflection;
+using MMX.Core.API.Infrastructure.Initialization;
 
 namespace MMX
 {
@@ -31,9 +32,8 @@ namespace MMX
                 ShellController.Views.Create<MainShellContent>("MainShellContent");
 
                 // view model loader
-                ReflectViewModels();
-
-                //ViewModelLocator.Register(Constants.ShellViewModel, new ShellViewModel() { Controller = new ControllerBase(ShellController) });
+                Bootstrapper.ShellController = ShellController;
+                Bootstrapper.ReflectAssemblies(Deployment.Current);
 
                 // use the out of browser app
                 this.RootVisual = ShellController.Views.Create<MMXShell>("MainShell");
@@ -42,28 +42,6 @@ namespace MMX
             {
                 // use the web installer
                 this.RootVisual = new WebLandingPage();
-            }
-        }
-
-        private void ReflectViewModels()
-        {
-            List<Assembly> assemblies = Deployment.Current.Parts.Select(
-                    ap => Application.GetResourceStream(new Uri(ap.Source, UriKind.Relative))).Select(
-                        stream => new AssemblyPart().Load(stream.Stream)).ToList();
-
-            foreach (Assembly asm in assemblies)
-            {
-                foreach (Type t in asm.GetTypes().Where((at) => { return at.IsDefined(typeof(ViewModelAttribute), true); }))
-                {
-                    ViewModelAttribute vmAtt = t.GetCustomAttributes(true).FirstOrDefault(
-                        (a) => { return a is ViewModelAttribute; }) as ViewModelAttribute;
-
-                    object instance = Activator.CreateInstance(t);
-                    PropertyInfo pController = t.GetProperty("Controller", BindingFlags.Instance | BindingFlags.Public);
-                    if (pController != null)
-                        pController.SetValue(instance, ShellController, null);
-                    ViewModelLocator.Register(vmAtt.ID, instance);
-                }
             }
         }
 
