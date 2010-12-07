@@ -8,6 +8,7 @@ using MMX.Views;
 using System.Collections.Generic;
 using System.Reflection;
 using MMX.Core.API.Infrastructure.Initialization;
+using MMX.Core.API.Infrastructure.Factories;
 
 namespace MMX
 {
@@ -28,7 +29,7 @@ namespace MMX
         {
             if (Application.Current.HasElevatedPermissions && Application.Current.IsRunningOutOfBrowser)
             {
-                ShellController = new ControllerBase(null);
+                ShellController = Generate<ControllerBase>();
                 ShellController.Views.Create<MainShellContent>("MainShellContent");
 
                 // view model loader
@@ -43,6 +44,51 @@ namespace MMX
                 // use the web installer
                 this.RootVisual = new WebLandingPage();
             }
+        }
+
+        IController Generate<T>() where T : class
+        {
+            IController instance;
+
+            Type t = typeof(T);
+            ConstructorInfo cInfo = null;
+            foreach (ConstructorInfo ci in t.GetConstructors())
+            {
+
+                ParameterInfo[] pArr = ci.GetParameters();
+                if (pArr.Length == 0)
+                {
+                    cInfo = ci;
+                    break;
+                }
+                bool valid = true;
+                foreach (ParameterInfo pi in pArr)
+                    if (!pi.IsDefined(typeof(CreateNewAttribute), false))
+                        valid = false;
+                if (valid)
+                {
+                    cInfo = ci;
+                    break;
+                }
+            }
+
+            if (cInfo != null)
+            {
+                ParameterInfo[] piArr = cInfo.GetParameters();
+                if (piArr.Length == 0)
+                    instance = cInfo.Invoke(null) as IController;
+                else
+                {
+                    object[] objs = new object[piArr.Length];
+                    for (int i = 0; i < objs.Length; ++i)
+                        objs[i] = null;
+                    instance = cInfo.Invoke(objs) as IController;
+                }
+            }
+            else
+                instance = default(T) as IController;
+
+            return instance;
         }
 
         private void Application_Exit(object sender, EventArgs e)

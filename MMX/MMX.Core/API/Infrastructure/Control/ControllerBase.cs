@@ -11,12 +11,13 @@ using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 using MMX.Core.API.Infrastructure.Services;
 using MMX.Core.API.Infrastructure.Views;
+using MMX.Core.API.Infrastructure.Factories;
 
 namespace MMX.Core.API.Infrastructure.Control
 {
     public class ControllerBase : IController
     {
-        public ControllerBase(IController parent)
+        public ControllerBase([CreateNew]IController parent)
         {
             Parent = parent;
             Controllers = new ControllerCache(parent);
