@@ -64,6 +64,7 @@
     <Compile Include="API\Infrastructure\Control\IController.cs" />
     <Compile Include="API\Infrastructure\Control\ISessionController.cs" />
     <Compile Include="API\Infrastructure\Factories\ViewModelInjector.cs" />
+    <Compile Include="API\Infrastructure\Initialization\Bootstrapper.cs" />
     <Compile Include="API\Infrastructure\Initialization\IBootStrapperService.cs" />
     <Compile Include="API\Infrastructure\Services\ServiceAttribute.cs" />
     <Compile Include="API\Infrastructure\Services\ServiceCache.cs" />
