@@ -44,10 +44,52 @@ namespace MMX.Bootstrap
                     // Store the object with the correct method
                     if (att.ServiceType == typeof(IMMXService))
                         locator.RegisterMMXService(o as IMMXService, att.Id);
-                    else if (att.ServiceType == typeof(IMMXHost))
-                        locator.RegisterMMXHost(o as IMMXHost, att.Id);
                     else if (att.ServiceType == typeof(ITelnetSocket))
                         locator.RegisterTelnet(o as ITelnetSocket, att.Id);
+                }
+            }
+        }
+
+        public static void GenerateUI(IServiceLocator locator)
+        {
+            // find all the loaded assemblies
+            var assemblies = Deployment.Current.Parts.Select(
+                ap => Application.GetResourceStream(new Uri(ap.Source, UriKind.Relative))).Select(
+                    s => new AssemblyPart().Load(s.Stream)).ToArray();
+
+            // Loop through the assemblies
+            foreach (var asm in assemblies)
+            {
+                // Find all types decorated with the service registration
+                var types = asm.GetTypes().Where(
+                    t => t.IsDefined(typeof(ViewRegistrationAttribute), true)).ToArray();
+
+                // Iterate the types to load them on the fly
+                foreach (Type t in types)
+                {
+                    // Get the service registration attribute
+                    ViewRegistrationAttribute att = t.GetCustomAttributes(
+                        typeof(ViewRegistrationAttribute), true).First() as ViewRegistrationAttribute;
+
+                    // Check for a view model requirement
+                    ViewModelAttribute vmAtt = t.GetCustomAttributes(typeof(ViewModelAttribute), true).FirstOrDefault() as ViewModelAttribute;
+                    
+                    // Load the view model if needed
+                    if (vmAtt != null)
+                    {
+                        // Create the instance
+                        IMMXViewModel vm = Activator.CreateInstance(vmAtt.ViewModelType) as IMMXViewModel;
+
+                        // Register it with the locator
+                        new ViewModelLocator()[vmAtt.Id] = vm;
+                    }
+
+                    // Create an instance of the object
+                    object o = Activator.CreateInstance(t);
+
+                    // Store the object with the correct method
+                    if (att.ViewType == typeof(IMMXHost))
+                        locator.RegisterMMXHost(o as IMMXHost, att.Id);
                 }
             }
         }

@@ -9,13 +9,12 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
 
-namespace MMX.Core
+namespace MMX.Common.API.UI
 {
-    public static class ServiceConstants
+    [AttributeUsage(AttributeTargets.Class)]
+    public class ViewRegistrationAttribute : Attribute
     {
-        public const string TelnetSocket = "MMX.Telnet.Socket";
-
-        public const string MMXHost = "MMX.Host";
-        public const string MMXHostVM = "MMX.Host.ViewModel";
+        public string Id { get; set; }
+        public Type ViewType { get; set; }
     }
 }

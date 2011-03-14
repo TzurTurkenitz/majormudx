@@ -38,6 +38,9 @@ namespace MMX
                 // Invoke the bootstrapper
                 MMXBootstrap.LoadServices(_locator);
 
+                // Load the UI elements
+                MMXBootstrap.GenerateUI(_locator);
+
                 // Set the root visual
                 RootVisual = _locator.GetInstance<UIElement>(ServiceConstants.MMXHost);
             }

@@ -63,6 +63,10 @@
     <Compile Include="API\Services\IServiceLocator.cs" />
     <Compile Include="API\Services\ServiceRegistrationAttribute.cs" />
     <Compile Include="API\UI\IMMXHost.cs" />
+    <Compile Include="API\UI\IMMXViewModel.cs" />
+    <Compile Include="API\UI\ViewModelAttribute.cs" />
+    <Compile Include="API\UI\ViewModelLocator.cs" />
+    <Compile Include="API\UI\ViewRegistrationAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
