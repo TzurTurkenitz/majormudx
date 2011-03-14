@@ -15,18 +15,13 @@ using MMX.Common.API.Services;
 
 namespace MMX.Core.UI
 {
-    [ServiceRegistration(Id = ServiceConstants.MMXHost, ServiceType = typeof(IMMXHost))]
+    [ViewRegistration(Id = ServiceConstants.MMXHost, ViewType = typeof(IMMXHost))]
+    [ViewModel(ViewModelType = typeof(MMXHostViewModel), Id = ServiceConstants.MMXHostVM, CreateNew = true)]
     public partial class MMXHost : Page, IMMXHost
     {
         public MMXHost()
         {
             InitializeComponent();
         }
-
-        // Executes when the user navigates to this page.
-        protected override void OnNavigatedTo(NavigationEventArgs e)
-        {
-        }
-
     }
 }

@@ -8,14 +8,12 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using MMX.Common.API.Services;
 
-namespace MMX.Core
+namespace MMX.Common.API.UI
 {
-    public static class ServiceConstants
+    public interface IMMXViewModel
     {
-        public const string TelnetSocket = "MMX.Telnet.Socket";
-
-        public const string MMXHost = "MMX.Host";
-        public const string MMXHostVM = "MMX.Host.ViewModel";
+        IServiceLocator ServiceLocator { get; }
     }
 }

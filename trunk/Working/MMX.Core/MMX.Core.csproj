@@ -63,6 +63,7 @@
     <Compile Include="UI\MMXHost.xaml.cs">
       <DependentUpon>MMXHost.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\MMXHostViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MMX.Common\MMX.Common.csproj">
