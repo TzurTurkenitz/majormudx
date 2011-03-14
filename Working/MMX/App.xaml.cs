@@ -9,11 +9,16 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using MMX.Bootstrap;
+using MMX.Common.API.Services;
+using MMX.Core;
+using MMX.Core.Services;
 
 namespace MMX
 {
     public partial class App : Application
     {
+        IServiceLocator _locator;
 
         public App()
         {
@@ -26,7 +31,20 @@ namespace MMX
 
         private void Application_Startup(object sender, StartupEventArgs e)
         {
-            this.RootVisual = new MainPage();
+            if (IsRunningOutOfBrowser && HasElevatedPermissions)
+            {
+                _locator = new ServiceLocator();
+
+                // Invoke the bootstrapper
+                MMXBootstrap.LoadServices(_locator);
+
+                // Set the root visual
+                RootVisual = _locator.GetInstance<UIElement>(ServiceConstants.MMXHost);
+            }
+            else
+            {
+                RootVisual = new DefaultPage();
+            }
         }
 
         private void Application_Exit(object sender, EventArgs e)
@@ -36,18 +54,13 @@ namespace MMX
 
         private void Application_UnhandledException(object sender, ApplicationUnhandledExceptionEventArgs e)
         {
-            // If the app is running outside of the debugger then report the exception using
-            // the browser's exception mechanism. On IE this will display it a yellow alert 
-            // icon in the status bar and Firefox will display a script error.
             if (!System.Diagnostics.Debugger.IsAttached)
             {
-
-                // NOTE: This will allow the application to continue running after an exception has been thrown
-                // but not handled. 
-                // For production applications this error handling should be replaced with something that will 
-                // report the error to the website and stop the application.
                 e.Handled = true;
-                Deployment.Current.Dispatcher.BeginInvoke(delegate { ReportErrorToDOM(e); });
+                if (Application.Current.HasElevatedPermissions && Application.Current.IsRunningOutOfBrowser)
+                    ; // handle errors here
+                else
+                    Deployment.Current.Dispatcher.BeginInvoke(delegate { ReportErrorToDOM(e); });
             }
         }
 

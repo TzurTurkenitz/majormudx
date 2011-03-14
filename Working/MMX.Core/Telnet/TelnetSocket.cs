@@ -1,20 +1,13 @@
 ﻿using System;
-using System.Net;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Ink;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Animation;
-using System.Windows.Shapes;
+using System.Collections.Generic;
 using System.Net;
 using System.Net.Sockets;
 using MMX.Common.API.Communication;
-using System.Collections.Generic;
+using MMX.Common.API.Services;
 
 namespace MMX.Core.Telnet
 {
+    [ServiceRegistration(Id = ServiceConstants.TelnetSocket, ServiceType = typeof(ITelnetSocket))]
     public class TelnetSocket : ITelnetSocket
     {
         EndPoint _endpoint;
@@ -26,12 +19,12 @@ namespace MMX.Core.Telnet
 
         List<ITelnetProcessor> _processors;
 
-        internal TelnetSocket()
-            : this("localhost")
+        public TelnetSocket()
+            : this("time-a.nist.gov")
         {
         }
 
-        internal TelnetSocket(string address)
+        public TelnetSocket(string address)
         {
             _processors = new List<ITelnetProcessor>();
             _endpoint = new DnsEndPoint(address, TELNET_PORT);
@@ -162,7 +155,7 @@ namespace MMX.Core.Telnet
                 // Notify listeners that the socket will close
                 TelnetEventArgs args = new TelnetEventArgs() { Cancel = false };
                 _closing(this, args);
-                
+
                 // Check to see if anyone wanted to cancel the event
                 if (args.Cancel)
                     return;
