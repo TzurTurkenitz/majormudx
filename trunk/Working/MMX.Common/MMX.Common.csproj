@@ -59,11 +59,14 @@
     <Compile Include="API\Communication\ITelnetSocket.cs" />
     <Compile Include="API\Communication\TelnetEventArgs.cs" />
     <Compile Include="API\Communication\TelnetState.cs" />
+    <Compile Include="API\Services\IMMXService.cs" />
+    <Compile Include="API\Services\IServiceLocator.cs" />
+    <Compile Include="API\Services\ServiceRegistrationAttribute.cs" />
+    <Compile Include="API\UI\IMMXHost.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="API\Services\" />
-    <Folder Include="API\UI\" />
+    <Folder Include="API\Utilities\" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

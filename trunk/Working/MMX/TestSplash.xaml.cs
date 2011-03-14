@@ -9,14 +9,21 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Shapes;
+using System.Windows.Navigation;
 
 namespace MMX
 {
-    public partial class MainPage : UserControl
+    public partial class TestSplash : Page
     {
-        public MainPage()
+        public TestSplash()
         {
             InitializeComponent();
         }
+
+        // Executes when the user navigates to this page.
+        protected override void OnNavigatedTo(NavigationEventArgs e)
+        {
+        }
+
     }
 }
