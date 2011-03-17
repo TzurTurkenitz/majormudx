@@ -17,11 +17,15 @@ namespace MMX.Core.UI
     public class MMXHostViewModel : IMMXViewModel, INotifyPropertyChanged
     {
         IServiceLocator _locator;
+        IMMXContentContainer _container;
+
         string _msg;
 
         public MMXHostViewModel()
         {
-            _msg = "Hello World";
+            _container = new MMXContentContainer();
+            if (PropertyChanged != null)
+                PropertyChanged(this, new PropertyChangedEventArgs("Container"));
         }
 
         IServiceLocator IMMXViewModel.ServiceLocator
@@ -32,10 +36,12 @@ namespace MMX.Core.UI
             }
         }
 
-        public string Message
+        public IMMXContentContainer Container
         {
-            get { return _msg; }
-            set { _msg = value; if (PropertyChanged != null) PropertyChanged(this, new PropertyChangedEventArgs("Message")); }
+            get
+            {
+                return _container;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -30,8 +30,7 @@
                    Margin="10,0,0,0"
                    Height="25" Text="{Binding Path=Message}"/>
         <Border BorderBrush="Black" BorderThickness="2" Grid.Row="2">
-            <UIApi:MMXContentContainer Name="mmxHost">
-            </UIApi:MMXContentContainer>
+            <ContentControl Content="{Binding Content}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
         </Border>
     </Grid>
 </navigation:Page>
