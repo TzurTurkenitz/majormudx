@@ -42,7 +42,16 @@ namespace MMX.Common.API.UI
         {
             if (_root != null && _views.ContainsKey(id))
                 _root.Dispatcher.BeginInvoke(
-                    () => { _root.Children.Clear(); _root.Children.Add(_views[id]); });
+                    () =>
+                    {
+                        _root.Children.Clear();
+                        _root.Children.Add(_views[id]);
+                        _root.Children[0].Visibility = System.Windows.Visibility.Visible;
+                        _root.Children[0].UpdateLayout();
+                        _root.Children[0].SetValue(UserControl.HorizontalAlignmentProperty, HorizontalAlignment.Stretch);
+                        _root.Children[0].SetValue(UserControl.VerticalAlignmentProperty, VerticalAlignment.Stretch);
+                        _root.UpdateLayout();
+                    });
         }
     }
 }

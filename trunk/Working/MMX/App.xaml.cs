@@ -14,6 +14,7 @@ using MMX.Common.API.Services;
 using MMX.Core;
 using MMX.Core.Services;
 using MMX.Common.API.Control;
+using MMX.Core.Control;
 
 namespace MMX
 {
@@ -46,8 +47,11 @@ namespace MMX
 
                 IMMXController[] ctl = controllers.ToArray();
 
-                // Set the root visual
-                RootVisual = new DefaultPage();// _locator.GetInstance<UIElement>(ServiceConstants.MMXHost);
+                if (ctl[0] is MMXHostController)
+                    RootVisual = (ctl[0] as MMXHostController).HostUI;
+                else
+                    // Set the root visual
+                    RootVisual = new DefaultPage();// _locator.GetInstance<UIElement>(ServiceConstants.MMXHost);
             }
             else
             {

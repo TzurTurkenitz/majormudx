@@ -65,6 +65,9 @@
       <DependentUpon>MMXHost.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\MMXHostViewModel.cs" />
+    <Compile Include="UI\TestView.xaml.cs">
+      <DependentUpon>TestView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\MMX.Common\MMX.Common.csproj">
@@ -74,6 +77,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="UI\MMXHost.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\TestView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
