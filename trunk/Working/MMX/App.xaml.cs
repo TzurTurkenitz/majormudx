@@ -13,6 +13,7 @@ using MMX.Bootstrap;
 using MMX.Common.API.Services;
 using MMX.Core;
 using MMX.Core.Services;
+using MMX.Common.API.Control;
 
 namespace MMX
 {
@@ -36,13 +37,17 @@ namespace MMX
                 _locator = new ServiceLocator();
 
                 // Invoke the bootstrapper
-                MMXBootstrap.LoadServices(_locator);
+                //MMXBootstrap.LoadServices(_locator);
 
                 // Load the UI elements
-                MMXBootstrap.GenerateUI(_locator);
+                //MMXBootstrap.GenerateUI(_locator);
+
+                var controllers = MMXBootstrap.BuildControllers(_locator);
+
+                IMMXController[] ctl = controllers.ToArray();
 
                 // Set the root visual
-                RootVisual = _locator.GetInstance<UIElement>(ServiceConstants.MMXHost);
+                RootVisual = new DefaultPage();// _locator.GetInstance<UIElement>(ServiceConstants.MMXHost);
             }
             else
             {

@@ -59,6 +59,10 @@
     <Compile Include="API\Communication\ITelnetSocket.cs" />
     <Compile Include="API\Communication\TelnetEventArgs.cs" />
     <Compile Include="API\Communication\TelnetState.cs" />
+    <Compile Include="API\Control\IMMXController.cs" />
+    <Compile Include="API\Control\MMXControllerAttribute.cs" />
+    <Compile Include="API\Infrastructure\MMXDefaultConstructorAttribute.cs" />
+    <Compile Include="API\Infrastructure\MMXInjectNewAttribute.cs" />
     <Compile Include="API\Services\IMMXService.cs" />
     <Compile Include="API\Services\IServiceLocator.cs" />
     <Compile Include="API\Services\ServiceRegistrationAttribute.cs" />
