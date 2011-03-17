@@ -15,8 +15,6 @@ using MMX.Common.API.Services;
 
 namespace MMX.Core.UI
 {
-    [ViewRegistration(Id = ServiceConstants.MMXHost, ViewType = typeof(IMMXHost))]
-    [ViewModel(ViewModelType = typeof(MMXHostViewModel), Id = ServiceConstants.MMXHostVM, CreateNew = true)]
     public partial class MMXHost : Page, IMMXHost
     {
         public MMXHost()

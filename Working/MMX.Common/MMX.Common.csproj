@@ -73,11 +73,10 @@
     <Compile Include="API\UI\ViewModelBase.cs" />
     <Compile Include="API\UI\ViewModelLocator.cs" />
     <Compile Include="API\UI\ViewRegistrationAttribute.cs" />
+    <Compile Include="API\Utilities\MMXBaseCommand.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="API\Utilities\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Page Include="API\UI\MMXContentContainer.xaml">
       <SubType>Designer</SubType>
