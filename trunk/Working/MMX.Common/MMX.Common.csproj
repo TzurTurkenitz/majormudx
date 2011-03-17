@@ -62,6 +62,7 @@
     <Compile Include="API\Services\IMMXService.cs" />
     <Compile Include="API\Services\IServiceLocator.cs" />
     <Compile Include="API\Services\ServiceRegistrationAttribute.cs" />
+    <Compile Include="API\UI\IMMXContentContainer.cs" />
     <Compile Include="API\UI\IMMXHost.cs" />
     <Compile Include="API\UI\IMMXViewModel.cs" />
     <Compile Include="API\UI\MMXContentContainer.xaml.cs">
