@@ -64,6 +64,10 @@
     <Compile Include="API\Services\ServiceRegistrationAttribute.cs" />
     <Compile Include="API\UI\IMMXHost.cs" />
     <Compile Include="API\UI\IMMXViewModel.cs" />
+    <Compile Include="API\UI\MMXContentContainer.xaml.cs">
+      <DependentUpon>MMXContentContainer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="API\UI\MMXContentSite.cs" />
     <Compile Include="API\UI\ViewModelAttribute.cs" />
     <Compile Include="API\UI\ViewModelBase.cs" />
     <Compile Include="API\UI\ViewModelLocator.cs" />
@@ -72,6 +76,12 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="API\Utilities\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="API\UI\MMXContentContainer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Silverlight\$(SilverlightVersion)\Microsoft.Silverlight.CSharp.targets" />
   <ProjectExtensions>

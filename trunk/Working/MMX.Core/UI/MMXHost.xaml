@@ -3,20 +3,35 @@
            xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
            xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
            xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-           xmlns:api="clr-namespace:MMX.Common.API.UI;assembly=MMX.Common"
+           xmlns:UIApi="clr-namespace:MMX.Common.API.UI;assembly=MMX.Common"
            mc:Ignorable="d"
            xmlns:navigation="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Navigation"
            d:DesignWidth="640" d:DesignHeight="480"
            Title="MMXHost Page">
     <navigation:Page.Resources>
-        <api:ViewModelLocator x:Key="ViewModelLocator"/>
+        <UIApi:ViewModelLocator x:Key="ViewModelLocator"/>
     </navigation:Page.Resources>
-    
+
     <navigation:Page.DataContext>
         <Binding Path="[MMX.Host.ViewModel]" Source="{StaticResource ViewModelLocator}"/>
     </navigation:Page.DataContext>
-    
+
     <Grid x:Name="LayoutRoot">
-        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center" Height="25" Text="{Binding Path=Message}"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="25"/>
+            <RowDefinition Height="25"/>
+            <RowDefinition/>
+            <RowDefinition Height="25"/>
+        </Grid.RowDefinitions>
+        <TextBlock Name="tblkTitle"
+                   Grid.Row="0"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Center"
+                   Margin="10,0,0,0"
+                   Height="25" Text="{Binding Path=Message}"/>
+        <Border BorderBrush="Black" BorderThickness="2" Grid.Row="2">
+            <UIApi:MMXContentContainer Name="mmxHost">
+            </UIApi:MMXContentContainer>
+        </Border>
     </Grid>
 </navigation:Page>
